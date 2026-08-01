@@ -1,0 +1,310 @@
+:root {
+  --color-primary-lime: #84cc16;
+  --color-primary-lime-hover: #65a30d;
+  --color-primary-lime-light: #f7fee7;
+  --color-primary-lime-border: #bef264;
+  --color-danger-red: #ef4444;
+  --color-danger-red-hover: #dc2626;
+  --color-text-dark: #0f172a;
+  --color-text-muted: #64748b;
+  --color-text-light: #f8fafc;
+  --color-text-white: #ffffff;
+  --color-bg-main: #f8fafc;
+  --color-bg-card: #ffffff;
+  --color-bg-hover: #f1f5f9;
+  --color-border: #e2e8f0;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-lime: 0 4px 16px rgba(132, 204, 22, 0.25);
+  --shadow-lime-hover: 0 6px 18px rgba(132, 204, 22, 0.4);
+  --transition-smooth: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme='dark'] {
+  --color-primary-lime: #84cc16;
+  --color-primary-lime-hover: #a3e635;
+  --color-primary-lime-light: #1a2e05;
+  --color-primary-lime-border: #365314;
+  --color-danger-red: #ef4444;
+  --color-danger-red-hover: #dc2626;
+  --color-text-dark: #f8fafc;
+  --color-text-muted: #a1a1aa;
+  --color-text-light: #09090b;
+  --color-text-white: #ffffff;
+  --color-bg-main: #09090b;
+  --color-bg-card: #141417;
+  --color-bg-hover: #1e1e24;
+  --color-border: #27272a;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+body {
+  background-color: var(--color-bg-main) !important;
+  color: var(--color-text-dark) !important;
+}
+
+.ant-layout {
+  background: var(--color-bg-main) !important;
+}
+
+.site-layout .site-layout-background {
+  background: var(--color-bg-card) !important;
+}
+
+/* SYSTEMATIC TYPOGRAPHY THEME ADAPTATION */
+.ant-typography,
+.ant-typography h1,
+.ant-typography h2,
+.ant-typography h3,
+.ant-typography h4,
+.ant-typography h5,
+.ant-typography h6,
+.ant-typography p,
+.ant-typography span {
+  color: var(--color-text-dark);
+}
+
+.ant-typography-secondary {
+  color: var(--color-text-muted) !important;
+}
+
+/* INPUT THEME STYLING */
+.ant-input,
+.ant-input-affix-wrapper {
+  background-color: var(--color-bg-main) !important;
+  color: var(--color-text-dark) !important;
+  border-color: var(--color-border) !important;
+}
+
+.ant-input::placeholder {
+  color: var(--color-text-muted) !important;
+}
+
+/* PROGRESS BAR THEME STYLING */
+.ant-progress-inner {
+  background-color: var(--color-border) !important;
+}
+
+.ant-progress-bg {
+  background-color: var(--color-primary-lime) !important;
+}
+
+.ant-progress-text {
+  color: var(--color-text-dark) !important;
+}
+
+/* SYSTEMATIC PRIMARY BUTTON STYLING */
+.ant-btn-primary {
+  background-color: var(--color-primary-lime) !important;
+  border-color: var(--color-primary-lime) !important;
+  color: var(--color-text-white) !important;
+  font-weight: 700 !important;
+  box-shadow: var(--shadow-lime) !important;
+  transition: background-color 150ms ease, border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease !important;
+}
+
+.ant-btn-primary *,
+.ant-btn-primary .anticon,
+.ant-btn-primary .anticon svg,
+.ant-btn-primary .anticon path,
+.ant-btn-primary span,
+.ant-btn-primary a {
+  color: var(--color-text-white) !important;
+  fill: var(--color-text-white) !important;
+  transition: none !important;
+}
+
+.ant-btn-primary:hover,
+.ant-btn-primary:focus {
+  background-color: var(--color-primary-lime-hover) !important;
+  border-color: var(--color-primary-lime-hover) !important;
+  color: var(--color-text-white) !important;
+  box-shadow: var(--shadow-lime-hover) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* DEFAULT / OUTLINE BUTTONS */
+.ant-btn-default {
+  background-color: var(--color-bg-card) !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-text-dark) !important;
+}
+
+.ant-btn-default *,
+.ant-btn-default .anticon,
+.ant-btn-default .anticon svg,
+.ant-btn-default span {
+  color: var(--color-text-dark) !important;
+  fill: var(--color-text-dark) !important;
+  transition: none !important;
+}
+
+.ant-btn-default:hover {
+  background-color: var(--color-bg-hover) !important;
+  border-color: var(--color-primary-lime) !important;
+  color: var(--color-primary-lime-hover) !important;
+}
+
+/* DASHED CHIP BUTTONS */
+.ant-btn-dashed {
+  background-color: var(--color-primary-lime-light) !important;
+  border-color: var(--color-primary-lime-border) !important;
+  color: var(--color-primary-lime-hover) !important;
+}
+
+.ant-btn-dashed *,
+.ant-btn-dashed span {
+  color: var(--color-primary-lime-hover) !important;
+  transition: none !important;
+}
+
+.ant-btn-dashed:hover {
+  background-color: var(--color-primary-lime) !important;
+  border-color: var(--color-primary-lime) !important;
+  color: var(--color-text-white) !important;
+}
+
+.ant-btn-dashed:hover *,
+.ant-btn-dashed:hover span {
+  color: var(--color-text-white) !important;
+}
+
+/* Exempt dangerous action buttons */
+.ant-btn-dangerous,
+.sidebar-logout-btn {
+  background-color: var(--color-danger-red) !important;
+  border-color: var(--color-danger-red) !important;
+  color: var(--color-text-white) !important;
+}
+
+.ant-btn-dangerous:hover,
+.sidebar-logout-btn:hover {
+  background-color: var(--color-danger-red-hover) !important;
+  border-color: var(--color-danger-red-hover) !important;
+}
+
+.ant-card {
+  background-color: var(--color-bg-card) !important;
+  border-color: var(--color-border) !important;
+  transition: all var(--transition-smooth) !important;
+}
+
+.whiteBox {
+  border-radius: 16px !important;
+  background: var(--color-bg-card) !important;
+  border: 1px solid var(--color-border) !important;
+  box-shadow: var(--shadow-md) !important;
+  transition: all var(--transition-smooth) !important;
+}
+
+.whiteBox h3 {
+  color: var(--color-text-dark) !important;
+}
+
+.headerIcon .ant-dropdown-menu {
+  border-radius: 10px;
+  background: var(--color-bg-card) !important;
+  padding: 8px;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--color-border);
+}
+
+.headerIcon .ant-dropdown-menu-item:hover,
+.headerIcon .ant-dropdown-menu-item.ant-dropdown-menu-item-active {
+  background: var(--color-primary-lime) !important;
+  color: var(--color-text-white) !important;
+  border-radius: 8px;
+}
+
+.App {
+  text-align: center;
+}
+
+.login-form button[type='submit'] {
+  margin-bottom: 20px;
+}
+
+.login-form-forgot {
+  float: right;
+  color: var(--color-primary-lime-hover);
+}
+
+.login-form-button {
+  width: 100%;
+}
+
+.ant-table-thead > tr > th {
+  font-weight: 700;
+  background: var(--color-bg-hover) !important;
+  color: var(--color-text-dark) !important;
+  border-bottom: 1px solid var(--color-border) !important;
+}
+
+.ant-table-tbody > tr > td {
+  border-bottom: 1px solid var(--color-border) !important;
+  background: var(--color-bg-card) !important;
+  color: var(--color-text-dark) !important;
+  transition: all var(--transition-smooth) !important;
+}
+
+.ant-table-tbody > tr:hover > td {
+  background: var(--color-bg-main) !important;
+}
+
+.ant-typography strong {
+  font-weight: 700;
+  color: var(--color-text-dark);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  color: inherit;
+}
+
+.ant-menu-inline {
+  padding-bottom: 20px;
+}
+
+.tabContent .ant-tabs-right > .ant-tabs-content-holder,
+.tabContent .ant-tabs-right > div > .ant-tabs-content-holder {
+  border-right: none;
+}
+
+.tabContent .ant-tabs .ant-tabs-tab + .ant-tabs-tab {
+  margin: 0;
+}
+
+.ant-select-show-search:where(.css-dev-only-do-not-override-2q8sxy).ant-select:not(.ant-select-customize-input) .ant-select-selector {
+  cursor: pointer;
+}
+
+.ant-menu-item {
+  height: 40px !important;
+  line-height: 40px !important;
+}
+
+@media (max-width: 992px) {
+  .auth-desktop-container {
+    flex-direction: column !important;
+    position: relative !important;
+  }
+  .auth-side-panel {
+    display: none !important;
+  }
+  .auth-form-panel {
+    position: relative !important;
+    left: 0 !important;
+    width: 100% !important;
+    transform: none !important;
+  }
+  .tabContent .ant-tabs-right > .ant-tabs-content-holder > .ant-tabs-content > .ant-tabs-tabpane {
+    padding-right: 0;
+    margin-top: 30px;
+  }
+  .tabContent .ant-tabs {
+    display: block;
+  }
+}
