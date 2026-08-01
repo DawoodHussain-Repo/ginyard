@@ -116,7 +116,7 @@ export default function AiActionPreviewModal({ open, proposal, onClose, onRefine
       width={640}
       title={
         <Space>
-          <RocketOutlined style={{ color: '#84cc16', fontSize: 20 }} />
+          <RocketOutlined style={{ color: 'var(--color-primary-lime, #0f766e)', fontSize: 20 }} />
           <span style={{ fontWeight: 800 }}>AI Proposed Action Preview</span>
           <Tag color="blue">{proposal.action_type?.replace('_', ' ')}</Tag>
         </Space>
@@ -175,7 +175,7 @@ export default function AiActionPreviewModal({ open, proposal, onClose, onRefine
 
         {/* Financial Totals */}
         {proposal.total !== undefined && (
-          <Card size="small" style={{ background: '#f8fafc', borderRadius: 8, marginBottom: 16 }}>
+          <Card size="small" style={{ background: 'var(--color-bg-main)', borderColor: 'var(--color-border)', borderRadius: 8, marginBottom: 16 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
               <Text type="secondary">Subtotal:</Text>
               <Text>{proposal.currency || 'USD'} {Number(proposal.subTotal || proposal.total).toLocaleString()}</Text>
@@ -187,7 +187,7 @@ export default function AiActionPreviewModal({ open, proposal, onClose, onRefine
             <Divider style={{ margin: '8px 0' }} />
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <Text strong style={{ fontSize: 16 }}>Total Amount:</Text>
-              <Text strong style={{ fontSize: 18, color: '#84cc16' }}>
+              <Text strong style={{ fontSize: 18, color: 'var(--color-primary-lime, #0f766e)' }}>
                 {proposal.currency || 'USD'} {Number(proposal.total).toLocaleString()}
               </Text>
             </div>
@@ -195,8 +195,8 @@ export default function AiActionPreviewModal({ open, proposal, onClose, onRefine
         )}
 
         {/* What needs fixing / Modification Input */}
-        <div style={{ background: '#fafafa', padding: 12, borderRadius: 8, border: '1px solid #f0f0f0' }}>
-          <Text strong style={{ display: 'block', marginBottom: 6, fontSize: 13 }}>
+        <div style={{ background: 'var(--color-bg-hover)', padding: 14, borderRadius: 10, border: '1px solid var(--color-border)' }}>
+          <Text strong style={{ display: 'block', marginBottom: 8, fontSize: 13 }}>
             <EditOutlined /> What needs fixing? (Optional adjustment prompt)
           </Text>
           <div style={{ display: 'flex', gap: 8 }}>
