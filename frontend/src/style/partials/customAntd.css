@@ -242,17 +242,45 @@ body {
   color: var(--color-text-white) !important;
 }
 
-/* RED / DANGEROUS / DELETE / LOGOUT BUTTONS — ALWAYS PURE WHITE TEXT & ICONS IN ALL THEMES */
+/* RED / DANGEROUS / DELETE / LOGOUT BUTTONS — ALWAYS PURE RED BG WITH PURE WHITE TEXT & ICONS IN ALL STATES & THEMES */
 .ant-btn-dangerous,
 .ant-btn-primary-dangerous,
 .ant-btn[danger],
 .sidebar-logout-btn,
 .delete-btn,
-.btn-delete {
+.btn-delete,
+.ant-btn-dangerous:hover,
+.ant-btn-dangerous:focus,
+.ant-btn-dangerous:active,
+.ant-btn-primary-dangerous:hover,
+.ant-btn-primary-dangerous:focus,
+.ant-btn-primary-dangerous:active,
+.ant-btn[danger]:hover,
+.ant-btn[danger]:focus,
+.ant-btn[danger]:active,
+.sidebar-logout-btn:hover,
+.sidebar-logout-btn:focus,
+.sidebar-logout-btn:active,
+.delete-btn:hover,
+.delete-btn:focus,
+.delete-btn:active,
+.btn-delete:hover,
+.btn-delete:focus,
+.btn-delete:active {
   background-color: var(--color-danger-red, #ef4444) !important;
   border-color: var(--color-danger-red, #ef4444) !important;
   color: #ffffff !important;
-  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.25) !important;
+  box-shadow: none !important;
+}
+
+.ant-btn-dangerous:hover,
+.ant-btn-primary-dangerous:hover,
+.ant-btn[danger]:hover,
+.sidebar-logout-btn:hover,
+.delete-btn:hover,
+.btn-delete:hover {
+  background-color: var(--color-danger-red-hover, #dc2626) !important;
+  border-color: var(--color-danger-red-hover, #dc2626) !important;
 }
 
 .ant-btn-dangerous *,
@@ -291,34 +319,6 @@ body {
 .btn-delete .anticon path,
 .btn-delete span,
 .btn-delete a {
-  color: #ffffff !important;
-  fill: #ffffff !important;
-}
-
-.ant-btn-dangerous:hover,
-.ant-btn-dangerous:focus,
-.ant-btn-primary-dangerous:hover,
-.ant-btn-primary-dangerous:focus,
-.ant-btn[danger]:hover,
-.ant-btn[danger]:focus,
-.sidebar-logout-btn:hover,
-.sidebar-logout-btn:focus,
-.delete-btn:hover,
-.delete-btn:focus,
-.btn-delete:hover,
-.btn-delete:focus {
-  background-color: var(--color-danger-red-hover, #dc2626) !important;
-  border-color: var(--color-danger-red-hover, #dc2626) !important;
-  color: #ffffff !important;
-  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.45) !important;
-}
-
-.ant-btn-dangerous:hover *,
-.ant-btn-primary-dangerous:hover *,
-.ant-btn[danger]:hover *,
-.sidebar-logout-btn:hover *,
-.delete-btn:hover *,
-.btn-delete:hover * {
   color: #ffffff !important;
   fill: #ffffff !important;
 }
@@ -388,7 +388,56 @@ body {
 }
 
 .ant-table-tbody > tr:hover > td {
-  background: var(--color-bg-main) !important;
+  background: var(--color-bg-hover) !important;
+}
+
+.ant-table-tbody > tr > td a {
+  color: var(--color-primary-lime) !important;
+  font-weight: 600 !important;
+}
+
+.ant-table-tbody > tr > td a:hover {
+  color: var(--color-primary-lime-hover) !important;
+}
+
+/* PageHeader Back Button Theme Adaptation */
+.ant-page-header-back,
+.ant-page-header-back-button,
+.ant-page-header-back-button .anticon,
+.ant-page-header-back-button .anticon svg {
+  color: var(--color-text-dark) !important;
+  fill: var(--color-text-dark) !important;
+}
+
+[data-theme='dark'] .ant-page-header-back,
+[data-theme='dark'] .ant-page-header-back-button,
+[data-theme='dark'] .ant-page-header-back-button .anticon,
+[data-theme='dark'] .ant-page-header-back-button .anticon svg,
+[data-theme='dark'] .ant-page-header-back-button .anticon path,
+[data-theme='dark'] .ant-table,
+[data-theme='dark'] .ant-table-thead > tr > th,
+[data-theme='dark'] .ant-table-tbody > tr > td,
+[data-theme='dark'] .ant-table-tbody > tr > td span,
+[data-theme='dark'] .ant-card-head-title,
+[data-theme='dark'] .ant-card-body,
+[data-theme='dark'] .ant-page-header-heading-title,
+[data-theme='dark'] .ant-page-header-heading-sub-title,
+[data-theme='dark'] .ant-descriptions-item-label,
+[data-theme='dark'] .ant-descriptions-item-content,
+[data-theme='dark'] .ant-form-item-label > label,
+[data-theme='dark'] .ant-statistic-title,
+[data-theme='dark'] .ant-statistic-content,
+[data-theme='dark'] .ant-list-item,
+[data-theme='dark'] .ant-modal-header,
+[data-theme='dark'] .ant-modal-title,
+[data-theme='dark'] .ant-modal-body,
+[data-theme='dark'] .ant-crud-table-title,
+[data-theme='dark'] .ant-dropdown-menu-item {
+  color: #f8fafc !important;
+}
+
+[data-theme='dark'] .ant-table-tbody > tr > td a {
+  color: #38bdf8 !important;
 }
 
 .ant-typography strong {

@@ -10,8 +10,10 @@
   z-index: 1000;
   background: var(--color-bg-card) !important;
   border-radius: 16px;
-  box-shadow: var(--shadow-md);
+  box-shadow: none !important;
   border: 1px solid var(--color-border) !important;
+  flex-shrink: 0 !important;
+  align-self: flex-start !important;
 }
 
 .navigation::-webkit-scrollbar {
@@ -146,8 +148,8 @@
   align-items: center !important;
   justify-content: center !important;
   color: #ffffff !important;
-  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3) !important;
-  transition: all 180ms ease-in-out !important;
+  box-shadow: none !important;
+  transition: background-color 180ms ease !important;
   cursor: pointer !important;
   padding: 0 !important;
   flex-shrink: 0 !important;
@@ -163,8 +165,7 @@
 .sidebar-logout-btn:hover,
 .sidebar-logout-btn:focus {
   background-color: var(--color-danger-red-hover) !important;
-  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.5) !important;
-  transform: scale(1.05) !important;
+  box-shadow: none !important;
   color: #ffffff !important;
 }
 
