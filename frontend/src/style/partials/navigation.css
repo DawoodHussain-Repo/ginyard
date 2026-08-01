@@ -54,81 +54,100 @@
   background: transparent !important;
 }
 
-/* Menu item pill - single fast container transition, NO icon/text delay */
+/* Navitem Design — Smooth, flicker-free transitions */
 .navigation .ant-menu-item {
-  width: 100% !important;
-  margin: 4px 0 !important;
-  border-radius: 10px !important;
+  width: calc(100% - 4px) !important;
+  margin: 5px 2px !important;
+  height: 44px !important;
+  line-height: 44px !important;
+  border-radius: 12px !important;
   background-color: transparent !important;
   color: var(--color-text-muted) !important;
-  transition: background-color 150ms ease-in-out, color 150ms ease-in-out !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  padding: 0 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  transition: background-color 180ms ease, color 180ms ease, transform 180ms ease, box-shadow 180ms ease !important;
 }
 
 .navigation .ant-menu-item::after {
   display: none !important;
 }
 
-/* Force child elements (icons, text, links) to have NO independent transition delays */
-.navigation .ant-menu-item *,
-.navigation .ant-menu-item a,
-.navigation .ant-menu-item span,
-.navigation .ant-menu-item div,
-.navigation .ant-menu-item .ant-menu-title-content,
-.navigation .ant-menu-item .anticon,
+.navigation .ant-menu-item a {
+  color: inherit !important;
+  font-weight: inherit !important;
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  height: 100% !important;
+  transition: color 180ms ease !important;
+}
+
+.navigation .ant-menu-item .anticon {
+  font-size: 17px !important;
+  margin-right: 12px !important;
+  transition: color 180ms ease, transform 180ms ease !important;
+}
+
 .navigation .ant-menu-item .anticon svg {
-  background: transparent !important;
-  background-color: transparent !important;
-  transition: none !important;
+  fill: currentColor !important;
 }
 
-/* Selected item - Lime pill background with pure white text & icons instantly */
+/* Selected Item — Left Side-Line Indicator (Zero Shadow) */
 .navigation .ant-menu-item-selected {
-  background-color: var(--color-primary-lime) !important;
-  color: var(--color-text-white) !important;
+  background-color: var(--color-primary-lime-light) !important;
+  color: var(--color-primary-lime) !important;
   font-weight: 700 !important;
+  box-shadow: none !important;
+  border-left: 3px solid var(--color-primary-lime) !important;
+  border-radius: 0 10px 10px 0 !important;
+  padding-left: 13px !important;
 }
 
-.navigation .ant-menu-item-selected *,
 .navigation .ant-menu-item-selected a,
-.navigation .ant-menu-item-selected span,
-.navigation .ant-menu-item-selected div,
-.navigation .ant-menu-item-selected .ant-menu-title-content,
-.navigation .ant-menu-item-selected .anticon,
-.navigation .ant-menu-item-selected .anticon svg {
-  color: var(--color-text-white) !important;
-  fill: var(--color-text-white) !important;
+.navigation .ant-menu-item-selected .anticon {
+  color: var(--color-primary-lime) !important;
 }
 
-/* Hover state - Instant synchronized fill for pill, text, and icons */
-.navigation .ant-menu-item:hover {
-  background-color: var(--color-primary-lime) !important;
-  color: var(--color-text-white) !important;
+[data-theme='dark'] .navigation .ant-menu-item-selected,
+[data-theme='dark'] .navigation .ant-menu-item-selected a,
+[data-theme='dark'] .navigation .ant-menu-item-selected .anticon {
+  color: #ffffff !important;
 }
 
-.navigation .ant-menu-item:hover *,
-.navigation .ant-menu-item:hover a,
-.navigation .ant-menu-item:hover span,
-.navigation .ant-menu-item:hover div,
-.navigation .ant-menu-item:hover .ant-menu-title-content,
-.navigation .ant-menu-item:hover .anticon,
-.navigation .ant-menu-item:hover .anticon svg {
-  color: var(--color-text-white) !important;
-  fill: var(--color-text-white) !important;
+/* Hover state — Smooth slide-in with rich theme-aware background */
+.navigation .ant-menu-item:hover:not(.ant-menu-item-selected) {
+  background-color: var(--color-bg-hover) !important;
+  color: var(--color-text-dark) !important;
+  transform: translateX(2px) !important;
 }
 
-/* Red Logout Button Styling */
+.navigation .ant-menu-item:hover:not(.ant-menu-item-selected) a,
+.navigation .ant-menu-item:hover:not(.ant-menu-item-selected) .anticon {
+  color: var(--color-text-dark) !important;
+}
+
+.navigation .ant-menu-item-selected:hover {
+  background-color: var(--color-primary-lime-light) !important;
+  color: var(--color-primary-lime-hover) !important;
+  box-shadow: none !important;
+}
+
+/* Red Logout Button Styling — ALWAYS White Text & Icon */
 .sidebar-logout-btn {
-  width: 36px !important;
-  height: 36px !important;
-  border-radius: 10px !important;
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 12px !important;
   background-color: var(--color-danger-red) !important;
   border: none !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  color: var(--color-text-white) !important;
-  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.25) !important;
-  transition: all 150ms ease-in-out !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3) !important;
+  transition: all 180ms ease-in-out !important;
   cursor: pointer !important;
   padding: 0 !important;
   flex-shrink: 0 !important;
@@ -136,17 +155,17 @@
 
 .sidebar-logout-btn .anticon,
 .sidebar-logout-btn .anticon svg {
-  color: var(--color-text-white) !important;
-  fill: var(--color-text-white) !important;
+  color: #ffffff !important;
+  fill: #ffffff !important;
   font-size: 16px !important;
-  transition: none !important;
 }
 
 .sidebar-logout-btn:hover,
 .sidebar-logout-btn:focus {
   background-color: var(--color-danger-red-hover) !important;
-  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.45) !important;
-  transform: translateY(-1px) scale(1.05) !important;
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.5) !important;
+  transform: scale(1.05) !important;
+  color: #ffffff !important;
 }
 
 @media only screen and (max-width: 768px) {

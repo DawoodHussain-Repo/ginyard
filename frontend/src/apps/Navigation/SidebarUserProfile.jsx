@@ -57,7 +57,7 @@ export default function SidebarUserProfile() {
         }}
       >
         <Space align="center" size={6}>
-          <SunOutlined style={{ color: !isDark ? '#84cc16' : '#94a3b8', fontSize: 15 }} />
+          <SunOutlined style={{ color: !isDark ? 'var(--color-primary-lime, #0f766e)' : '#94a3b8', fontSize: 15 }} />
           <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--color-text-muted, #64748b)' }}>
             Theme
           </span>
@@ -69,7 +69,7 @@ export default function SidebarUserProfile() {
             onChange={handleThemeToggle}
             size="small"
             style={{
-              backgroundColor: isDark ? '#84cc16' : '#cbd5e1',
+              backgroundColor: isDark ? 'var(--color-primary-lime, #0f766e)' : '#cbd5e1',
             }}
           />
           <MoonOutlined style={{ color: isDark ? '#38bdf8' : '#94a3b8', fontSize: 14 }} />
@@ -100,7 +100,7 @@ export default function SidebarUserProfile() {
             src={currentAdmin?.photo ? FILE_BASE_URL + currentAdmin?.photo : undefined}
             style={{
               color: 'var(--color-text-white, #ffffff)',
-              backgroundColor: currentAdmin?.photo ? 'none' : 'var(--color-primary-lime, #84cc16)',
+              backgroundColor: currentAdmin?.photo ? 'none' : 'var(--color-primary-lime, #0f766e)',
               fontWeight: 800,
               flexShrink: 0,
             }}

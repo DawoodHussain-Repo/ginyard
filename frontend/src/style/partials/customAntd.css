@@ -1,8 +1,8 @@
 :root {
-  --color-primary-lime: #84cc16;
-  --color-primary-lime-hover: #65a30d;
-  --color-primary-lime-light: #f7fee7;
-  --color-primary-lime-border: #bef264;
+  --color-primary-lime: #0f766e;
+  --color-primary-lime-hover: #115e59;
+  --color-primary-lime-light: #f0fdfa;
+  --color-primary-lime-border: #99f6e4;
   --color-danger-red: #ef4444;
   --color-danger-red-hover: #dc2626;
   --color-text-dark: #0f172a;
@@ -16,16 +16,16 @@
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
   --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.04);
   --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.08);
-  --shadow-lime: 0 4px 16px rgba(132, 204, 22, 0.25);
-  --shadow-lime-hover: 0 6px 18px rgba(132, 204, 22, 0.4);
+  --shadow-lime: 0 4px 16px rgba(15, 118, 110, 0.25);
+  --shadow-lime-hover: 0 6px 18px rgba(15, 118, 110, 0.4);
   --transition-smooth: 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 [data-theme='dark'] {
-  --color-primary-lime: #84cc16;
-  --color-primary-lime-hover: #a3e635;
-  --color-primary-lime-light: #1a2e05;
-  --color-primary-lime-border: #365314;
+  --color-primary-lime: #0d9488;
+  --color-primary-lime-hover: #14b8a6;
+  --color-primary-lime-light: #042f2e;
+  --color-primary-lime-border: #134e4a;
   --color-danger-red: #ef4444;
   --color-danger-red-hover: #dc2626;
   --color-text-dark: #f8fafc;
@@ -96,14 +96,61 @@ body {
   color: var(--color-text-dark) !important;
 }
 
-/* SYSTEMATIC PRIMARY BUTTON STYLING */
+/* SYSTEM-WIDE BUTTON & ICON VERTICAL CENTER ALIGNMENT */
+.ant-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  line-height: 1 !important;
+}
+
+.ant-btn .anticon {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  vertical-align: 0 !important;
+  line-height: 1 !important;
+}
+
+.ant-btn .anticon svg {
+  display: block !important;
+  margin: 0 !important;
+}
+
+.ant-btn span {
+  display: inline-flex !important;
+  align-items: center !important;
+  line-height: 1 !important;
+}
+
+/* Modal, Drawer, and Icon-Only Close Buttons alignment */
+.ant-modal-close,
+.ant-drawer-close,
+.ant-btn-text,
+.ant-btn-icon-only {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.ant-modal-close-x {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: 100% !important;
+  line-height: 1 !important;
+}
+
+/* SYSTEMATIC PRIMARY BUTTON STYLING — Flat Premium Tone */
 .ant-btn-primary {
   background-color: var(--color-primary-lime) !important;
   border-color: var(--color-primary-lime) !important;
   color: var(--color-text-white) !important;
-  font-weight: 700 !important;
-  box-shadow: var(--shadow-lime) !important;
-  transition: background-color 150ms ease, border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease !important;
+  font-weight: 600 !important;
+  box-shadow: none !important;
+  transition: background-color 150ms ease, border-color 150ms ease !important;
 }
 
 .ant-btn-primary *,
@@ -122,30 +169,53 @@ body {
   background-color: var(--color-primary-lime-hover) !important;
   border-color: var(--color-primary-lime-hover) !important;
   color: var(--color-text-white) !important;
-  box-shadow: var(--shadow-lime-hover) !important;
-  transform: translateY(-1px) !important;
+  box-shadow: none !important;
+  transform: none !important;
 }
 
-/* DEFAULT / OUTLINE BUTTONS */
+/* DEFAULT / OUTLINE BUTTONS — Zinc Background on Hover (No Border Change) */
 .ant-btn-default {
   background-color: var(--color-bg-card) !important;
   border-color: var(--color-border) !important;
   color: var(--color-text-dark) !important;
+  transition: all 180ms cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 .ant-btn-default *,
 .ant-btn-default .anticon,
 .ant-btn-default .anticon svg,
-.ant-btn-default span {
+.ant-btn-default span,
+.ant-btn-default a {
   color: var(--color-text-dark) !important;
   fill: var(--color-text-dark) !important;
-  transition: none !important;
+  transition: color 180ms ease !important;
 }
 
-.ant-btn-default:hover {
-  background-color: var(--color-bg-hover) !important;
-  border-color: var(--color-primary-lime) !important;
-  color: var(--color-primary-lime-hover) !important;
+.ant-btn-default:hover,
+.ant-btn-default:focus {
+  background-color: #e4e4e7 !important; /* Zinc-200 background in light mode */
+  border-color: var(--color-border) !important;
+  color: var(--color-text-dark) !important;
+}
+
+.ant-btn-default:hover *,
+.ant-btn-default:hover .anticon,
+.ant-btn-default:hover .anticon svg,
+.ant-btn-default:hover span,
+.ant-btn-default:hover a,
+.ant-btn-default:focus *,
+.ant-btn-default:focus .anticon,
+.ant-btn-default:focus .anticon svg,
+.ant-btn-default:focus span,
+.ant-btn-default:focus a {
+  color: var(--color-text-dark) !important;
+  fill: var(--color-text-dark) !important;
+}
+
+[data-theme='dark'] .ant-btn-default:hover,
+[data-theme='dark'] .ant-btn-default:focus {
+  background-color: #27272a !important; /* Zinc-800 background in dark mode */
+  border-color: var(--color-border) !important;
 }
 
 /* DASHED CHIP BUTTONS */
@@ -172,18 +242,85 @@ body {
   color: var(--color-text-white) !important;
 }
 
-/* Exempt dangerous action buttons */
+/* RED / DANGEROUS / DELETE / LOGOUT BUTTONS — ALWAYS PURE WHITE TEXT & ICONS IN ALL THEMES */
 .ant-btn-dangerous,
-.sidebar-logout-btn {
-  background-color: var(--color-danger-red) !important;
-  border-color: var(--color-danger-red) !important;
-  color: var(--color-text-white) !important;
+.ant-btn-primary-dangerous,
+.ant-btn[danger],
+.sidebar-logout-btn,
+.delete-btn,
+.btn-delete {
+  background-color: var(--color-danger-red, #ef4444) !important;
+  border-color: var(--color-danger-red, #ef4444) !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.25) !important;
+}
+
+.ant-btn-dangerous *,
+.ant-btn-dangerous .anticon,
+.ant-btn-dangerous .anticon svg,
+.ant-btn-dangerous .anticon path,
+.ant-btn-dangerous span,
+.ant-btn-dangerous a,
+.ant-btn-primary-dangerous *,
+.ant-btn-primary-dangerous .anticon,
+.ant-btn-primary-dangerous .anticon svg,
+.ant-btn-primary-dangerous .anticon path,
+.ant-btn-primary-dangerous span,
+.ant-btn-primary-dangerous a,
+.ant-btn[danger] *,
+.ant-btn[danger] .anticon,
+.ant-btn[danger] .anticon svg,
+.ant-btn[danger] .anticon path,
+.ant-btn[danger] span,
+.ant-btn[danger] a,
+.sidebar-logout-btn *,
+.sidebar-logout-btn .anticon,
+.sidebar-logout-btn .anticon svg,
+.sidebar-logout-btn .anticon path,
+.sidebar-logout-btn span,
+.sidebar-logout-btn a,
+.delete-btn *,
+.delete-btn .anticon,
+.delete-btn .anticon svg,
+.delete-btn .anticon path,
+.delete-btn span,
+.delete-btn a,
+.btn-delete *,
+.btn-delete .anticon,
+.btn-delete .anticon svg,
+.btn-delete .anticon path,
+.btn-delete span,
+.btn-delete a {
+  color: #ffffff !important;
+  fill: #ffffff !important;
 }
 
 .ant-btn-dangerous:hover,
-.sidebar-logout-btn:hover {
-  background-color: var(--color-danger-red-hover) !important;
-  border-color: var(--color-danger-red-hover) !important;
+.ant-btn-dangerous:focus,
+.ant-btn-primary-dangerous:hover,
+.ant-btn-primary-dangerous:focus,
+.ant-btn[danger]:hover,
+.ant-btn[danger]:focus,
+.sidebar-logout-btn:hover,
+.sidebar-logout-btn:focus,
+.delete-btn:hover,
+.delete-btn:focus,
+.btn-delete:hover,
+.btn-delete:focus {
+  background-color: var(--color-danger-red-hover, #dc2626) !important;
+  border-color: var(--color-danger-red-hover, #dc2626) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.45) !important;
+}
+
+.ant-btn-dangerous:hover *,
+.ant-btn-primary-dangerous:hover *,
+.ant-btn[danger]:hover *,
+.sidebar-logout-btn:hover *,
+.delete-btn:hover *,
+.btn-delete:hover * {
+  color: #ffffff !important;
+  fill: #ffffff !important;
 }
 
 .ant-card {

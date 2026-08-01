@@ -6,6 +6,7 @@ import { selectAppSettings } from '@/redux/settings/selectors';
 
 import { useAppContext } from '@/context/appContext';
 import useLanguage from '@/locale/useLanguage';
+import logoIcon from '@/style/images/logo-icon.svg';
 import logoLightTheme from '@/style/images/logo-light-theme.svg';
 import logoDarkTheme from '@/style/images/logo-dark-theme.svg';
 import useResponsive from '@/hooks/useResponsive';
@@ -102,10 +103,21 @@ function Sidebar({ collapsible, isMobile = false }) {
 
   useEffect(() => {
     if (location) {
+      const path = location.pathname.slice(1);
       if (location.pathname === '/') {
         setCurrentPath('dashboard');
+      } else if (path === 'payment/mode') {
+        setCurrentPath('paymentMode');
+      } else if (path.startsWith('invoice')) {
+        setCurrentPath('invoice');
+      } else if (path.startsWith('quote')) {
+        setCurrentPath('quote');
+      } else if (path.startsWith('payment')) {
+        setCurrentPath('payment');
+      } else if (path.startsWith('settings')) {
+        setCurrentPath('settings');
       } else {
-        setCurrentPath(location.pathname.slice(1));
+        setCurrentPath(path);
       }
     }
   }, [location]);
@@ -144,14 +156,23 @@ function Sidebar({ collapsible, isMobile = false }) {
             padding: '16px 20px 12px',
             display: 'flex',
             alignItems: 'center',
+            gap: 12,
             height: '60px',
           }}
         >
           <img
-            src={logoSrc}
-            alt="Ginyard Logo"
-            style={{ height: '52px', width: 'auto', objectFit: 'contain' }}
+            src={logoIcon}
+            alt="Ginyard Logo Icon"
+            style={{ height: '36px', width: '36px', objectFit: 'contain', flexShrink: 0 }}
           />
+          <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.15 }}>
+            <span style={{ fontSize: 17, fontWeight: 800, letterSpacing: '-0.02em', color: 'var(--color-text-dark, #0f172a)' }}>
+              Ginyard
+            </span>
+            <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', color: 'var(--color-primary-lime, #0f766e)', textTransform: 'uppercase' }}>
+              Financial OS
+            </span>
+          </div>
         </div>
         <Menu
           items={items}
