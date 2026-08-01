@@ -264,8 +264,12 @@ export default function ChatPanel() {
           setModalOpen(false);
           sendMessage(`Modification request for proposed action: ${feedbackText}`);
         }}
-        onSuccess={() => {
+        onSuccess={(result, executedProposal) => {
           setModalOpen(false);
+          if (executedProposal?.action_type === 'CREATE_CLIENT') {
+            const clientName = result?.name || executedProposal?.name || executedProposal?.client_name;
+            sendMessage(`Client "${clientName}" has been created successfully. Now please generate the proposed action preview for the invoice / quote for "${clientName}".`);
+          }
         }}
       />
     </div>

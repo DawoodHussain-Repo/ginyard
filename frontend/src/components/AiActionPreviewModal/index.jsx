@@ -49,7 +49,7 @@ export default function AiActionPreviewModal({ open, proposal, onClose, onRefine
 
         if (res.success) {
           message.success(`Client "${proposal.name}" created successfully!`);
-          if (onSuccess) onSuccess(res.result);
+          if (onSuccess) onSuccess(res.result, proposal);
           onClose();
         } else {
           message.error(res.message || 'Failed to create client.');
