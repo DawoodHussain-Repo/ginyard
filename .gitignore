@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Environment & local secrets
+.env
+.env.local
+*.env
+!*.env.example
+
+# Build outputs & dist
+dist/
+build/
+*/dist/
+*/build/
+
+# OS & IDE files
+.DS_Store
+.vscode/
+.idea/
+*.log
