@@ -178,8 +178,13 @@ export default function ChatPanel() {
           {toolCalls.map((tool, idx) => (
             <Tag
               key={idx}
-              color="lime"
-              style={{ fontSize: 11, borderRadius: 8 }}
+              style={{
+                fontSize: 11,
+                borderRadius: 8,
+                backgroundColor: 'var(--color-primary-lime-light)',
+                color: 'var(--color-primary-lime)',
+                borderColor: 'var(--color-primary-lime-border)',
+              }}
             >
               {tool.replace(/_/g, ' ')}
             </Tag>

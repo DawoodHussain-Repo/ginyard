@@ -557,7 +557,7 @@ export const selectColor = {
   volcano: 'volcano',
   orange: '#ffa500',
   gold: '#ffc436',
-  lime: 'lime',
+  lime: '#0f766e',
   green: '#008000',
   cyan: 'cyan',
   blue: '#0000ff',

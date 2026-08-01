@@ -53,16 +53,28 @@ const summary = async (Model, req, res) => {
         ],
         activeClients: [
           {
+            $match: {
+              removed: false,
+              enabled: true,
+              ...userFilter,
+            },
+          },
+          {
             $lookup: {
               from: InvoiceModel.collection.name,
-              localField: '_id', // Match _id from ClientModel
-              foreignField: 'client', // Match client field in InvoiceModel
+              localField: '_id',
+              foreignField: 'client',
               as: 'invoice',
             },
           },
           {
             $match: {
-              'invoice.removed': false,
+              invoice: {
+                $elemMatch: {
+                  removed: false,
+                  ...(req.admin ? { createdBy: req.admin._id } : {}),
+                },
+              },
             },
           },
           {

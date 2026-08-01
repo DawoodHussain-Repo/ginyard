@@ -1,4 +1,8 @@
 :root {
+  --color-primary-petrol: #0f766e;
+  --color-primary-petrol-hover: #115e59;
+  --color-primary-petrol-light: #f0fdfa;
+  --color-primary-petrol-border: #99f6e4;
   --color-primary-lime: #0f766e;
   --color-primary-lime-hover: #115e59;
   --color-primary-lime-light: #f0fdfa;
@@ -16,12 +20,16 @@
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
   --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.04);
   --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.08);
-  --shadow-lime: 0 4px 16px rgba(15, 118, 110, 0.25);
-  --shadow-lime-hover: 0 6px 18px rgba(15, 118, 110, 0.4);
+  --shadow-lime: none;
+  --shadow-lime-hover: none;
   --transition-smooth: 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 [data-theme='dark'] {
+  --color-primary-petrol: #0d9488;
+  --color-primary-petrol-hover: #14b8a6;
+  --color-primary-petrol-light: #042f2e;
+  --color-primary-petrol-border: #134e4a;
   --color-primary-lime: #0d9488;
   --color-primary-lime-hover: #14b8a6;
   --color-primary-lime-light: #042f2e;
