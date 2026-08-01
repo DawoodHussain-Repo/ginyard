@@ -1,6 +1,6 @@
 /**
  * Tool executor — runs tool calls against MongoDB directly via Mongoose.
- * No HTTP overhead, no separate service — queries the same DB the backend uses.
+ * Enforces strict tenant isolation by scoping all queries to req.admin._id.
  */
 
 const mongoose = require('mongoose');
@@ -26,7 +26,7 @@ function endOfDay(date) {
 
 // ── Tool Implementations ─────────────────────────────────────────────────
 
-async function getExpenses({ start_date, end_date, category } = {}) {
+async function getExpenses({ start_date, end_date, category } = {}, adminId) {
   const Expense = mongoose.model('Expense');
   const start = parseDate(start_date, -30);
   const end = endOfDay(parseDate(end_date, 0));
@@ -35,6 +35,7 @@ async function getExpenses({ start_date, end_date, category } = {}) {
     removed: false,
     date: { $gte: start, $lte: end },
   };
+  if (adminId) query.createdBy = adminId;
   if (category) query.category = category;
 
   const expenses = await Expense.find(query).sort({ date: -1 }).lean();
@@ -68,16 +69,19 @@ async function getExpenses({ start_date, end_date, category } = {}) {
   };
 }
 
-async function getIncome({ start_date, end_date } = {}) {
+async function getIncome({ start_date, end_date } = {}, adminId) {
   const Invoice = mongoose.model('Invoice');
   const start = parseDate(start_date, -30);
   const end = endOfDay(parseDate(end_date, 0));
 
-  const invoices = await Invoice.find({
+  const query = {
     removed: false,
     paymentStatus: 'paid',
     date: { $gte: start, $lte: end },
-  })
+  };
+  if (adminId) query.createdBy = adminId;
+
+  const invoices = await Invoice.find(query)
     .populate('client')
     .sort({ date: -1 })
     .lean();
@@ -97,9 +101,9 @@ async function getIncome({ start_date, end_date } = {}) {
   };
 }
 
-async function getCashFlowSummary({ start_date, end_date } = {}) {
-  const incomeData = await getIncome({ start_date, end_date });
-  const expenseData = await getExpenses({ start_date, end_date });
+async function getCashFlowSummary({ start_date, end_date } = {}, adminId) {
+  const incomeData = await getIncome({ start_date, end_date }, adminId);
+  const expenseData = await getExpenses({ start_date, end_date }, adminId);
 
   const totalIncome = incomeData.total_income;
   const totalExpenses = expenseData.total_expenses;
@@ -117,15 +121,18 @@ async function getCashFlowSummary({ start_date, end_date } = {}) {
   };
 }
 
-async function getOverdueInvoices() {
+async function getOverdueInvoices(args, adminId) {
   const Invoice = mongoose.model('Invoice');
   const now = new Date();
 
-  const invoices = await Invoice.find({
+  const query = {
     removed: false,
     paymentStatus: { $in: ['unpaid', 'partially'] },
     expiredDate: { $lt: now },
-  })
+  };
+  if (adminId) query.createdBy = adminId;
+
+  const invoices = await Invoice.find(query)
     .populate('client')
     .sort({ expiredDate: 1 })
     .lean();
@@ -154,18 +161,23 @@ async function getOverdueInvoices() {
   };
 }
 
-async function getTopVendors({ start_date, end_date, limit = 5 } = {}) {
+async function getTopVendors({ start_date, end_date, limit = 5 } = {}, adminId) {
   const Expense = mongoose.model('Expense');
   const start = parseDate(start_date, -90);
   const end = endOfDay(parseDate(end_date, 0));
 
+  const matchQuery = {
+    removed: false,
+    date: { $gte: start, $lte: end },
+  };
+  if (adminId) {
+    matchQuery.createdBy = mongoose.Types.ObjectId.isValid(adminId)
+      ? new mongoose.Types.ObjectId(adminId)
+      : adminId;
+  }
+
   const result = await Expense.aggregate([
-    {
-      $match: {
-        removed: false,
-        date: { $gte: start, $lte: end },
-      },
-    },
+    { $match: matchQuery },
     {
       $group: {
         _id: '$vendor',
@@ -187,6 +199,114 @@ async function getTopVendors({ start_date, end_date, limit = 5 } = {}) {
   };
 }
 
+async function proposeCreateInvoice({ client_name, items = [], currency = 'USD', notes = '' }, adminId) {
+  const Client = mongoose.model('Client');
+
+  const query = {
+    name: new RegExp('^' + client_name.trim() + '$', 'i'),
+    removed: false,
+  };
+  if (adminId) query.createdBy = adminId;
+
+  let existingClient = await Client.findOne(query).lean();
+
+  const processedItems = items.map((i) => ({
+    itemName: i.itemName || 'Item',
+    quantity: Number(i.quantity || 1),
+    price: Number(i.price || 0),
+    total: Number(i.quantity || 1) * Number(i.price || 0),
+  }));
+
+  const subTotal = processedItems.reduce((sum, item) => sum + item.total, 0);
+
+  return {
+    action_type: 'CREATE_INVOICE',
+    client_name: client_name.trim(),
+    client_id: existingClient ? existingClient._id.toString() : null,
+    client_exists: Boolean(existingClient),
+    client_email: existingClient?.email || null,
+    currency: currency.toUpperCase(),
+    items: processedItems,
+    subTotal,
+    taxRate: 0,
+    total: subTotal,
+    notes: notes || 'Created via AI Assistant',
+    preview_title: `Invoice for ${client_name} (${currency.toUpperCase()} ${subTotal.toLocaleString()})`,
+    requires_approval: true,
+  };
+}
+
+async function proposeCreateClient({ name, email = '', phone = '', address = '' }, adminId) {
+  const Client = mongoose.model('Client');
+
+  const query = {
+    name: new RegExp('^' + name.trim() + '$', 'i'),
+    removed: false,
+  };
+  if (adminId) query.createdBy = adminId;
+
+  let existingClient = await Client.findOne(query).lean();
+
+  return {
+    action_type: 'CREATE_CLIENT',
+    name: name.trim(),
+    email: email || '',
+    phone: phone || '',
+    address: address || '',
+    client_exists: Boolean(existingClient),
+    preview_title: `New Client: ${name}`,
+    requires_approval: true,
+  };
+}
+
+async function proposeCreateQuote({ client_name, items = [], notes = '' }, adminId) {
+  const Client = mongoose.model('Client');
+
+  const query = {
+    name: new RegExp('^' + client_name.trim() + '$', 'i'),
+    removed: false,
+  };
+  if (adminId) query.createdBy = adminId;
+
+  let existingClient = await Client.findOne(query).lean();
+
+  const processedItems = items.map((i) => ({
+    itemName: i.itemName || 'Item',
+    quantity: Number(i.quantity || 1),
+    price: Number(i.price || 0),
+    total: Number(i.quantity || 1) * Number(i.price || 0),
+  }));
+
+  const subTotal = processedItems.reduce((sum, item) => sum + item.total, 0);
+
+  return {
+    action_type: 'CREATE_QUOTE',
+    client_name: client_name.trim(),
+    client_id: existingClient ? existingClient._id.toString() : null,
+    client_exists: Boolean(existingClient),
+    items: processedItems,
+    subTotal,
+    taxRate: 0,
+    total: subTotal,
+    notes,
+    preview_title: `Quote for ${client_name} (${subTotal.toLocaleString()})`,
+    requires_approval: true,
+  };
+}
+
+async function proposeCreateExpense({ vendor, amount, category = 'Miscellaneous', date = null, description = '' }) {
+  return {
+    action_type: 'CREATE_EXPENSE',
+    vendor: vendor.trim(),
+    amount: Number(amount),
+    category,
+    date: date || new Date().toISOString().split('T')[0],
+    description,
+    preview_title: `Expense: ${vendor} (${amount})`,
+    requires_approval: true,
+  };
+}
+
 // ── Dispatch ─────────────────────────────────────────────────────────────
 
 const TOOL_HANDLERS = {
@@ -195,16 +315,20 @@ const TOOL_HANDLERS = {
   get_cash_flow_summary: getCashFlowSummary,
   get_overdue_invoices: getOverdueInvoices,
   get_top_vendors: getTopVendors,
+  propose_create_invoice: proposeCreateInvoice,
+  propose_create_client: proposeCreateClient,
+  propose_create_quote: proposeCreateQuote,
+  propose_create_expense: proposeCreateExpense,
 };
 
-async function executeTool(toolName, args) {
+async function executeTool(toolName, args, adminId) {
   const handler = TOOL_HANDLERS[toolName];
   if (!handler) {
     return JSON.stringify({ error: `Unknown tool: ${toolName}` });
   }
 
   try {
-    const result = await handler(args);
+    const result = await handler(args, adminId);
     return JSON.stringify(result, null, 0);
   } catch (err) {
     return JSON.stringify({ error: `Tool execution failed: ${err.message}` });

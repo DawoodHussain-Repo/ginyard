@@ -8,6 +8,58 @@ const schema = require('./schemaValidate');
 
 const create = async (req, res) => {
   let body = req.body;
+  const Client = mongoose.model('Client');
+  const adminId = req.admin._id;
+
+  // 1. Resolve client if passed as string name or missing valid ObjectId
+  if (body.client) {
+    if (typeof body.client === 'string' && !mongoose.Types.ObjectId.isValid(body.client)) {
+      let existingClient = await Client.findOne({
+        name: new RegExp('^' + body.client.trim() + '$', 'i'),
+        createdBy: adminId,
+        removed: false,
+      });
+
+      if (!existingClient) {
+        existingClient = await new Client({
+          name: body.client.trim(),
+          createdBy: adminId,
+        }).save();
+      }
+      body.client = existingClient._id.toString();
+    }
+  }
+
+  // 2. Set default invoice fields if omitted
+  if (!body.date) body.date = new Date();
+  if (!body.expiredDate) {
+    const exp = new Date(body.date);
+    exp.setDate(exp.getDate() + 30);
+    body.expiredDate = exp;
+  }
+  if (!body.year) body.year = new Date(body.date).getFullYear();
+  if (!body.status) body.status = 'draft';
+  if (body.taxRate === undefined || body.taxRate === null) body.taxRate = 0;
+
+  if (!body.number) {
+    const count = await Model.countDocuments({ createdBy: adminId });
+    body.number = count + 1;
+  }
+
+  // 3. Normalize items array
+  if (Array.isArray(body.items)) {
+    body.items = body.items.map((item) => {
+      const quantity = Number(item.quantity || 1);
+      const price = Number(item.price || 0);
+      return {
+        ...item,
+        itemName: item.itemName || 'Item',
+        quantity,
+        price,
+        total: calculate.multiply(quantity, price),
+      };
+    });
+  }
 
   const { error, value } = schema.validate(body);
   if (error) {

@@ -27,7 +27,13 @@ const summary = async (req, res) => {
   let startDate = currentDate.clone().startOf(defaultType);
   let endDate = currentDate.clone().endOf(defaultType);
 
-  const userFilter = req.admin ? { createdBy: req.admin._id } : {};
+  const userFilter = req.admin
+    ? {
+        createdBy: mongoose.Types.ObjectId.isValid(req.admin._id)
+          ? new mongoose.Types.ObjectId(req.admin._id)
+          : req.admin._id,
+      }
+    : {};
 
   // get total amount of invoices
   const result = await Model.aggregate([

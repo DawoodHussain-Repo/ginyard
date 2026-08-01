@@ -46,6 +46,8 @@ const authUser = async (req, res, { user, databasePassword, password, UserPasswo
         role: user.role,
         email: user.email,
         photo: user.photo,
+        onboarding_completed_at: user.onboarding_completed_at || null,
+        onboarding_step: user.onboarding_step || 1,
         token: token,
         maxAge: req.body.remember ? 365 : null,
       },

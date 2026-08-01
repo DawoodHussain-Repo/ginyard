@@ -23,6 +23,8 @@ async function setupApp() {
       surname: 'Admin',
       enabled: true,
       role: 'owner',
+      onboarding_completed_at: new Date(),
+      onboarding_step: 3,
     };
     const result = await new Admin(demoAdmin).save();
 

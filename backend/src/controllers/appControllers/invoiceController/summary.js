@@ -30,7 +30,13 @@ const summary = async (req, res) => {
 
   const statuses = ['draft', 'pending', 'overdue', 'paid', 'unpaid', 'partially'];
 
-  const userFilter = req.admin ? { createdBy: req.admin._id } : {};
+  const userFilter = req.admin
+    ? {
+        createdBy: mongoose.Types.ObjectId.isValid(req.admin._id)
+          ? new mongoose.Types.ObjectId(req.admin._id)
+          : req.admin._id,
+      }
+    : {};
 
   const response = await Model.aggregate([
     {

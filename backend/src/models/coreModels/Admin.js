@@ -32,6 +32,14 @@ const adminSchema = new Schema({
     default: 'owner',
     enum: ['owner'],
   },
+  onboarding_completed_at: {
+    type: Date,
+    default: null,
+  },
+  onboarding_step: {
+    type: Number,
+    default: 1,
+  },
 });
 
 module.exports = mongoose.model('Admin', adminSchema);

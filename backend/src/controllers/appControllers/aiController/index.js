@@ -13,9 +13,16 @@ const { generateInsights } = require('./insights');
  */
 const chatHandler = async (req, res) => {
   try {
-    const { message, history = [] } = req.body;
+    let userMessage = req.body.message;
+    let history = req.body.history || [];
 
-    if (!message || !message.trim()) {
+    if (!userMessage && Array.isArray(req.body.messages) && req.body.messages.length > 0) {
+      const lastMsg = req.body.messages[req.body.messages.length - 1];
+      userMessage = lastMsg?.content;
+      history = req.body.messages.slice(0, -1);
+    }
+
+    if (!userMessage || typeof userMessage !== 'string' || !userMessage.trim()) {
       return res.status(400).json({
         success: false,
         result: null,
@@ -23,13 +30,15 @@ const chatHandler = async (req, res) => {
       });
     }
 
-    const result = await chat(message, history);
+    const adminId = req.admin?._id;
+    const result = await chat(userMessage, history, adminId);
 
     return res.status(200).json({
       success: true,
       result: {
         response: result.response,
         tool_calls_made: result.tool_calls_made || [],
+        action_proposal: result.action_proposal || null,
       },
       message: 'Chat processed successfully',
     });
@@ -81,7 +90,8 @@ const parseTransactionHandler = async (req, res) => {
  */
 const insightsHandler = async (req, res) => {
   try {
-    const result = await generateInsights();
+    const adminId = req.admin?._id;
+    const result = await generateInsights(adminId);
 
     return res.status(200).json({
       success: true,

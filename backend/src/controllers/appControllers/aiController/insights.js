@@ -6,7 +6,7 @@
 
 const { getExpenses, getIncome, getOverdueInvoices } = require('./toolExecutor');
 
-async function generateInsights() {
+async function generateInsights(adminId) {
   const now = new Date();
   const today = now.toISOString().split('T')[0];
 
@@ -21,13 +21,16 @@ async function generateInsights() {
   const prevMonthEndStr = prevMonthEnd.toISOString().split('T')[0];
 
   // Fetch data
-  const currentExpenses = await getExpenses({ start_date: monthStart, end_date: today });
-  const prevExpenses = await getExpenses({
-    start_date: prevMonthStart,
-    end_date: prevMonthEndStr,
-  });
-  const currentIncome = await getIncome({ start_date: monthStart, end_date: today });
-  const overdue = await getOverdueInvoices();
+  const currentExpenses = await getExpenses({ start_date: monthStart, end_date: today }, adminId);
+  const prevExpenses = await getExpenses(
+    {
+      start_date: prevMonthStart,
+      end_date: prevMonthEndStr,
+    },
+    adminId
+  );
+  const currentIncome = await getIncome({ start_date: monthStart, end_date: today }, adminId);
+  const overdue = await getOverdueInvoices({}, adminId);
 
   const insights = [];
 

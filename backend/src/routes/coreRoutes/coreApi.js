@@ -9,7 +9,14 @@ const settingController = require('@/controllers/coreControllers/settingControll
 
 const { singleStorageUpload } = require('@/middlewares/uploadMiddleware');
 
-// //_______________________________ Admin management_______________________________
+const onboardingController = require('@/controllers/coreControllers/adminController/onboardingController');
+
+//_______________________________ Admin Onboarding _______________________________
+
+router.route('/admin/onboarding/finish').post(catchErrors(onboardingController.finishOnboarding));
+router.route('/admin/onboarding/step').post(catchErrors(onboardingController.updateStep));
+
+//_______________________________ Admin management_______________________________
 
 router.route('/admin/read/:id').get(catchErrors(adminController.read));
 
