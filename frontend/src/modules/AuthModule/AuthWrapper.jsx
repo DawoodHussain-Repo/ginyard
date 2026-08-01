@@ -31,9 +31,13 @@ export default function AuthWrapper() {
 
   useEffect(() => {
     if (isSuccess) {
-      navigate('/');
+      if (isRegister) {
+        navigate('/onboarding', { replace: true });
+      } else {
+        navigate('/', { replace: true });
+      }
     }
-  }, [isSuccess, navigate]);
+  }, [isSuccess, isRegister, navigate]);
 
   const onLoginFinish = (values) => {
     dispatch(login({ loginData: values }));

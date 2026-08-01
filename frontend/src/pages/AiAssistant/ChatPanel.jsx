@@ -7,6 +7,7 @@ import {
   ToolOutlined,
 } from '@ant-design/icons';
 import { request } from '@/request';
+import AiActionPreviewModal from '@/components/AiActionPreviewModal';
 
 const { Paragraph, Text } = Typography;
 
@@ -29,6 +30,8 @@ export default function ChatPanel() {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [toolCalls, setToolCalls] = useState([]);
+  const [proposal, setProposal] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -59,18 +62,25 @@ export default function ChatPanel() {
 
       const res = await request.post({
         entity: 'ai/chat',
-        jsonData: { messages: apiMessages },
+        jsonData: {
+          message: text,
+          messages: apiMessages,
+        },
       });
 
       if (res.success && res.result) {
         const assistantMessage = {
           role: 'assistant',
-          content: res.result.content || 'I couldn\'t find an answer for that.',
+          content: res.result.response || res.result.content || 'I couldn\'t find an answer for that.',
         };
         setMessages((prev) => [...prev, assistantMessage]);
 
-        if (res.result.tool_calls) {
-          setToolCalls(res.result.tool_calls);
+        if (res.result.tool_calls_made) {
+          setToolCalls(res.result.tool_calls_made);
+        }
+        if (res.result.action_proposal) {
+          setProposal(res.result.action_proposal);
+          setModalOpen(true);
         }
       } else {
         setMessages((prev) => [
@@ -245,6 +255,19 @@ export default function ChatPanel() {
           id="ai-chat-send"
         />
       </div>
+
+      <AiActionPreviewModal
+        open={modalOpen}
+        proposal={proposal}
+        onClose={() => setModalOpen(false)}
+        onRefineProposal={(feedbackText) => {
+          setModalOpen(false);
+          sendMessage(`Modification request for proposed action: ${feedbackText}`);
+        }}
+        onSuccess={() => {
+          setModalOpen(false);
+        }}
+      />
     </div>
   );
 }

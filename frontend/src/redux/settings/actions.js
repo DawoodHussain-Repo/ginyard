@@ -69,7 +69,7 @@ export const settingsAction = {
       }
     },
   updateMany:
-    ({ entity, jsonData }) =>
+    ({ entity, jsonData, options = { notifyOnSuccess: false, notifyOnFailed: true } }) =>
     async (dispatch) => {
       dispatch({
         type: actionTypes.REQUEST_LOADING,
@@ -77,6 +77,7 @@ export const settingsAction = {
       let data = await request.patch({
         entity: entity + '/updateManySetting',
         jsonData,
+        options,
       });
 
       if (data.success === true) {

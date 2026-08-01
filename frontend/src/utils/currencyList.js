@@ -1,4 +1,4 @@
-const currencyFlag = [
+export const currencyFlag = [
   { currency_code: 'USD', flag: '🇺🇸' },
   { currency_code: 'CAD', flag: '🇨🇦' },
   { currency_code: 'EUR', flag: '🇪🇺' },

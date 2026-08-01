@@ -212,14 +212,11 @@ const request = {
       return errorHandler(error);
     }
   },
-  patch: async ({ entity, jsonData }) => {
+  patch: async ({ entity, jsonData, options = { notifyOnSuccess: true, notifyOnFailed: true } }) => {
     try {
       includeToken();
       const response = await axios.patch(entity, jsonData);
-      successHandler(response, {
-        notifyOnSuccess: true,
-        notifyOnFailed: true,
-      });
+      successHandler(response, options);
       return response.data;
     } catch (error) {
       return errorHandler(error);

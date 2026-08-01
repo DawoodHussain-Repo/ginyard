@@ -27,12 +27,26 @@ const Profile = lazy(() => import('@/pages/Profile'));
 const About = lazy(() => import('@/pages/About'));
 const AiAssistant = lazy(() => import('@/pages/AiAssistant'));
 
+const Onboarding = lazy(() => import('@/pages/Onboarding'));
+
 let routes = {
   expense: [],
   default: [
     {
+      path: '/onboarding',
+      element: <Onboarding />,
+    },
+    {
       path: '/login',
-      element: <Navigate to="/" />,
+      element: <Navigate to="/" replace />,
+    },
+    {
+      path: '/register',
+      element: <Navigate to="/onboarding" replace />,
+    },
+    {
+      path: '/signup',
+      element: <Navigate to="/onboarding" replace />,
     },
     {
       path: '/logout',

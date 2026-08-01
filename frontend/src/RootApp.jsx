@@ -3,6 +3,7 @@ import './style/app.css';
 import { Suspense, lazy } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import { App as AntApp } from 'antd';
 import store from '@/redux/store';
 import PageLoader from '@/components/PageLoader';
 
@@ -12,9 +13,11 @@ export default function RoutApp() {
   return (
     <BrowserRouter>
       <Provider store={store}>
-        <Suspense fallback={<PageLoader />}>
-          <LedgerlyOs />
-        </Suspense>
+        <AntApp>
+          <Suspense fallback={<PageLoader />}>
+            <LedgerlyOs />
+          </Suspense>
+        </AntApp>
       </Provider>
     </BrowserRouter>
   );
