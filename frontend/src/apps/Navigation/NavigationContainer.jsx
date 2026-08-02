@@ -22,7 +22,7 @@ import {
   CreditCardOutlined,
   WalletOutlined,
   ReconciliationOutlined,
-  RobotOutlined,
+  GlobalOutlined,
 } from '@ant-design/icons';
 
 const { Sider } = Layout;
@@ -88,6 +88,11 @@ function Sidebar({ collapsible, isMobile = false }) {
       key: 'taxes',
       icon: <TagOutlined />,
       label: <Link to={'/taxes'}>{translate('taxes')}</Link>,
+    },
+    {
+      key: 'landing',
+      icon: <GlobalOutlined />,
+      label: <Link to={'/landing'}>SaaS Landing</Link>,
     },
     {
       key: 'settings',

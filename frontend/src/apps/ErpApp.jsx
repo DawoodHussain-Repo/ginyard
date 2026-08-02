@@ -28,6 +28,11 @@ export default function ErpCrmApp() {
 
   if (!settingIsloaded) return <PageLoader />;
 
+  // Allow full-screen Landing Page for logged-in users at /landing
+  if (location.pathname === '/landing') {
+    return <AppRouter />;
+  }
+
   // Route Guard: If onboarding is not completed, enforce /onboarding page without sidebar
   if (!isOnboardingCompleted) {
     if (location.pathname !== '/onboarding') {
