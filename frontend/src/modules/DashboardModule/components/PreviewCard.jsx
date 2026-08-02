@@ -38,12 +38,12 @@ const defaultInvoiceStatistics = [
 const PreviewState = ({ tag, value }) => {
   const translate = useLanguage();
   return (
-    <div style={{ marginBottom: 12 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-        <span className="capitalize" style={{ fontWeight: 600, color: 'var(--color-text-dark)' }}>
+    <div style={{ marginBottom: 6 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
+        <span className="capitalize" style={{ fontWeight: 600, fontSize: 13, color: 'var(--color-text-dark)' }}>
           {translate(tag)}
         </span>
-        <span style={{ fontWeight: 700, color: 'var(--color-primary-lime-hover)' }}>
+        <span style={{ fontWeight: 700, fontSize: 13, color: 'var(--color-primary-lime-hover)' }}>
           {value} %
         </span>
       </div>
@@ -52,6 +52,7 @@ const PreviewState = ({ tag, value }) => {
         showInfo={false}
         strokeColor="var(--color-primary-lime)"
         trailColor="var(--color-border)"
+        style={{ margin: 0 }}
       />
     </div>
   );
@@ -100,9 +101,9 @@ export default function PreviewCard({
         <h3
           style={{
             color: 'var(--color-text-dark)',
-            fontSize: '18px',
+            fontSize: '17px',
             fontWeight: 800,
-            marginBottom: 24,
+            marginBottom: 16,
             marginTop: 0,
           }}
         >

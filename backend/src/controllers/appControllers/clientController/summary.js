@@ -28,6 +28,8 @@ const summary = async (Model, req, res) => {
           $or: [
             { createdBy: new mongoose.Types.ObjectId(adminIdStr) },
             { createdBy: adminIdStr },
+            { createdBy: { $exists: false } },
+            { createdBy: null },
           ],
         }
       : { createdBy: adminIdStr }
@@ -82,7 +84,6 @@ const summary = async (Model, req, res) => {
               invoice: {
                 $elemMatch: {
                   removed: false,
-                  ...(req.admin ? { createdBy: req.admin._id } : {}),
                 },
               },
             },
