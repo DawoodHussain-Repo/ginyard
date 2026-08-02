@@ -130,6 +130,20 @@ const TOOL_DEFINITIONS = [
   {
     type: 'function',
     function: {
+      name: 'get_tax_variants',
+      description:
+        'Get all registered tax variants (e.g. Card Tax, Cash Tax, GST, VAT) from the accounting system. ' +
+        'Use this to ask the user which tax variant to apply or look up available tax rates.',
+      parameters: {
+        type: 'object',
+        properties: {},
+        required: [],
+      },
+    },
+  },
+  {
+    type: 'function',
+    function: {
       name: 'propose_create_invoice',
       description:
         'Propose creating a new invoice for a client. ' +

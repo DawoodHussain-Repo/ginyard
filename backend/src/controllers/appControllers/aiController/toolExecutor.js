@@ -199,6 +199,26 @@ async function getTopVendors({ start_date, end_date, limit = 5 } = {}, adminId) 
   };
 }
 
+async function getTaxVariants(args, adminId) {
+  const Taxes = mongoose.model('Taxes');
+  const query = { removed: false };
+  if (adminId) {
+    query.createdBy = mongoose.Types.ObjectId.isValid(adminId)
+      ? new mongoose.Types.ObjectId(adminId)
+      : adminId;
+  }
+
+  const taxes = await Taxes.find(query).lean();
+  return {
+    count: taxes.length,
+    tax_variants: taxes.map((t) => ({
+      name: t.taxName,
+      value: t.taxValue,
+      isDefault: Boolean(t.isDefault),
+    })),
+  };
+}
+
 async function proposeCreateInvoice({ client_name, items = [], currency, notes = '', taxRate }, adminId) {
   const Client = mongoose.model('Client');
   const Setting = mongoose.model('Setting');
@@ -606,6 +626,7 @@ const TOOL_HANDLERS = {
   get_cash_flow_summary: getCashFlowSummary,
   get_overdue_invoices: getOverdueInvoices,
   get_top_vendors: getTopVendors,
+  get_tax_variants: getTaxVariants,
   propose_create_invoice: proposeCreateInvoice,
   propose_create_client: proposeCreateClient,
   propose_create_quote: proposeCreateQuote,

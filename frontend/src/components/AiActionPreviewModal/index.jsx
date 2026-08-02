@@ -18,6 +18,7 @@ export default function AiActionPreviewModal({ open, proposal, onClose, onRefine
         const payload = {
           client: proposal.client_name,
           items: proposal.items,
+          status: proposal.status || 'draft',
           notes: proposal.notes || '',
           taxRate: proposal.taxRate || 0,
         };
@@ -38,7 +39,7 @@ export default function AiActionPreviewModal({ open, proposal, onClose, onRefine
         const payload = {
           client: proposal.client_name,
           items: proposal.items,
-          status: proposal.status,
+          status: proposal.status || 'draft',
           paymentStatus: proposal.paymentStatus,
           notes: proposal.notes || '',
           taxRate: proposal.taxRate || 0,
@@ -102,6 +103,7 @@ export default function AiActionPreviewModal({ open, proposal, onClose, onRefine
         const payload = {
           client: proposal.client_name,
           items: proposal.items,
+          status: proposal.status || 'draft',
           notes: proposal.notes || '',
           taxRate: proposal.taxRate || 0,
         };
