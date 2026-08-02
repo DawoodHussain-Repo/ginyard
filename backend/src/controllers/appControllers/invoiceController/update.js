@@ -10,16 +10,6 @@ const schema = require('./schemaValidate');
 const update = async (req, res) => {
   let body = req.body;
 
-  const { error, value } = schema.validate(body);
-  if (error) {
-    const { details } = error;
-    return res.status(400).json({
-      success: false,
-      result: null,
-      message: details[0]?.message,
-    });
-  }
-
   const adminIdStr = req.admin?._id ? req.admin._id.toString() : null;
   const userFilter = adminIdStr
     ? mongoose.Types.ObjectId.isValid(adminIdStr)
@@ -43,6 +33,25 @@ const update = async (req, res) => {
       success: false,
       result: null,
       message: 'Invoice not found',
+    });
+  }
+
+  // Populate omitted fields from previous invoice to pass validation & preserve state
+  if (!body.number) body.number = previousInvoice.number;
+  if (!body.year) body.year = previousInvoice.year;
+  if (!body.date) body.date = previousInvoice.date;
+  if (!body.expiredDate) body.expiredDate = previousInvoice.expiredDate;
+  if (!body.client) body.client = previousInvoice.client;
+  if (!body.status) body.status = previousInvoice.status;
+  if (body.taxRate === undefined) body.taxRate = previousInvoice.taxRate || 0;
+
+  const { error, value } = schema.validate(body);
+  if (error) {
+    const { details } = error;
+    return res.status(400).json({
+      success: false,
+      result: null,
+      message: details[0]?.message,
     });
   }
 

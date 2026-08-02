@@ -51,6 +51,13 @@ export default function InsightsCard() {
 
   useEffect(() => {
     fetchInsights();
+
+    const handleDataUpdate = () => {
+      fetchInsights();
+    };
+
+    window.addEventListener('erp-data-updated', handleDataUpdate);
+    return () => window.removeEventListener('erp-data-updated', handleDataUpdate);
   }, []);
 
   if (loading) {

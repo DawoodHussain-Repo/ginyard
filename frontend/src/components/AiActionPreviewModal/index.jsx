@@ -203,6 +203,8 @@ export default function AiActionPreviewModal({ open, proposal, onClose, onRefine
     }
   };
 
+  const currencyCode = proposal.currency && proposal.currency !== 'NA' ? proposal.currency : 'PKR';
+
   const columns = [
     { title: 'Item', dataIndex: 'itemName', key: 'itemName' },
     { title: 'Qty', dataIndex: 'quantity', key: 'quantity', align: 'center', width: 70 },
@@ -211,14 +213,14 @@ export default function AiActionPreviewModal({ open, proposal, onClose, onRefine
       dataIndex: 'price',
       key: 'price',
       align: 'right',
-      render: (val) => `${proposal.currency || 'USD'} ${Number(val).toLocaleString()}`,
+      render: (val) => `${currencyCode} ${Number(val).toLocaleString()}`,
     },
     {
       title: 'Total',
       dataIndex: 'total',
       key: 'total',
       align: 'right',
-      render: (val) => <strong>{proposal.currency || 'USD'} {Number(val).toLocaleString()}</strong>,
+      render: (val) => <strong>{currencyCode} {Number(val).toLocaleString()}</strong>,
     },
   ];
 
@@ -246,7 +248,7 @@ export default function AiActionPreviewModal({ open, proposal, onClose, onRefine
           onClick={handleApprove}
           style={{ fontWeight: 700 }}
         >
-          Approve & Create
+          Approve & Execute
         </Button>,
       ]}
     >
@@ -278,7 +280,7 @@ export default function AiActionPreviewModal({ open, proposal, onClose, onRefine
           <Table
             dataSource={proposal.items}
             columns={columns}
-            rowKey={(record, index) => record.itemName || index}
+            rowKey={(record, index) => record._id || record.itemName || `item-${index}`}
             pagination={false}
             size="small"
             bordered
@@ -291,7 +293,7 @@ export default function AiActionPreviewModal({ open, proposal, onClose, onRefine
           <Card size="small" style={{ background: 'var(--color-bg-main)', borderColor: 'var(--color-border)', borderRadius: 8, marginBottom: 16 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
               <Text type="secondary">Subtotal:</Text>
-              <Text>{proposal.currency || 'USD'} {Number(proposal.subTotal || proposal.total).toLocaleString()}</Text>
+              <Text>{currencyCode} {Number(proposal.subTotal || proposal.total).toLocaleString()}</Text>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
               <Text type="secondary">Tax Rate:</Text>
@@ -301,7 +303,7 @@ export default function AiActionPreviewModal({ open, proposal, onClose, onRefine
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <Text strong style={{ fontSize: 16 }}>Total Amount:</Text>
               <Text strong style={{ fontSize: 18, color: 'var(--color-primary-lime, #0f766e)' }}>
-                {proposal.currency || 'USD'} {Number(proposal.total).toLocaleString()}
+                {currencyCode} {Number(proposal.total).toLocaleString()}
               </Text>
             </div>
           </Card>
