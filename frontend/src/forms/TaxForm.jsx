@@ -56,6 +56,7 @@ export default function TaxForm({isUpdateForm = false}) {
                     paddingLeft: '5px',
                 }}
                 valuePropName="checked"
+                initialValue={false}
             >
                 <Switch checkedChildren={<CheckOutlined/>} unCheckedChildren={<CloseOutlined/>}/>
             </Form.Item>

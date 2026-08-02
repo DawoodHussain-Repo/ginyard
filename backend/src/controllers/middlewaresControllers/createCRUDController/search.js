@@ -19,7 +19,9 @@ const search = async (Model, req, res) => {
   }
   // console.log(fields)
 
-  const userFilter = req.admin ? { createdBy: req.admin._id } : {};
+  const userFilter = req.admin
+    ? { $or: [{ createdBy: req.admin._id }, { createdBy: { $exists: false } }, { createdBy: null }] }
+    : {};
 
   let results = await Model.find({
     ...fields,

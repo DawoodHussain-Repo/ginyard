@@ -28,6 +28,12 @@ const routerApp = (entity, controller) => {
 routesList.forEach(({ entity, controllerName }) => {
   const controller = appControllers[controllerName];
   routerApp(entity, controller);
+  if (controllerName.endsWith('Controller')) {
+    const rawEntity = controllerName.replace('Controller', '');
+    if (rawEntity !== entity) {
+      routerApp(rawEntity, controller);
+    }
+  }
 });
 
 module.exports = router;

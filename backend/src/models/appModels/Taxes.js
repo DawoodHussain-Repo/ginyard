@@ -21,6 +21,7 @@ const taxesSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  createdBy: { type: mongoose.Schema.ObjectId, ref: 'Admin' },
   created: {
     type: Date,
     default: Date.now,
