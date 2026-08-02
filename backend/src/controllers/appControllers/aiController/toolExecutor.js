@@ -199,8 +199,9 @@ async function getTopVendors({ start_date, end_date, limit = 5 } = {}, adminId) 
   };
 }
 
-async function proposeCreateInvoice({ client_name, items = [], currency = 'USD', notes = '' }, adminId) {
+async function proposeCreateInvoice({ client_name, items = [], currency, notes = '', taxRate }, adminId) {
   const Client = mongoose.model('Client');
+  const Setting = mongoose.model('Setting');
 
   const query = {
     name: new RegExp('^' + client_name.trim() + '$', 'i'),
@@ -210,14 +211,51 @@ async function proposeCreateInvoice({ client_name, items = [], currency = 'USD',
 
   let existingClient = await Client.findOne(query).lean();
 
-  const processedItems = items.map((i) => ({
+  let resolvedTaxRate = taxRate;
+  let tenantCurrency = currency;
+
+  if (adminId) {
+    if (resolvedTaxRate === undefined || resolvedTaxRate === null) {
+      const taxSetting = await Setting.findOne({ settingKey: 'default_tax_rate', createdBy: adminId }).lean();
+      if (taxSetting && taxSetting.settingValue !== undefined && taxSetting.settingValue !== '') {
+        resolvedTaxRate = Number(taxSetting.settingValue);
+      }
+    }
+    if (!tenantCurrency) {
+      const currencySetting = await Setting.findOne({ settingKey: 'default_currency_code', createdBy: adminId }).lean();
+      if (currencySetting && currencySetting.settingValue) {
+        tenantCurrency = currencySetting.settingValue;
+      }
+    }
+  }
+
+  if (resolvedTaxRate === undefined || resolvedTaxRate === null) resolvedTaxRate = 0;
+  if (!tenantCurrency) tenantCurrency = 'USD';
+
+  const Invoice = mongoose.model('Invoice');
+
+  let processedItems = items.map((i) => ({
     itemName: i.itemName || 'Item',
     quantity: Number(i.quantity || 1),
     price: Number(i.price || 0),
     total: Number(i.quantity || 1) * Number(i.price || 0),
   }));
 
+  if (processedItems.length === 0 && existingClient) {
+    const existingInvoice = await Invoice.findOne({ client: existingClient._id, removed: false }).sort({ created: -1 }).lean();
+    if (existingInvoice && Array.isArray(existingInvoice.items)) {
+      processedItems = existingInvoice.items.map((i) => ({
+        itemName: i.itemName || 'Item',
+        quantity: Number(i.quantity || 1),
+        price: Number(i.price || 0),
+        total: Number(i.total || (i.quantity * i.price) || 0),
+      }));
+    }
+  }
+
   const subTotal = processedItems.reduce((sum, item) => sum + item.total, 0);
+  const taxTotal = (subTotal * resolvedTaxRate) / 100;
+  const total = subTotal + taxTotal;
 
   return {
     action_type: 'CREATE_INVOICE',
@@ -225,13 +263,14 @@ async function proposeCreateInvoice({ client_name, items = [], currency = 'USD',
     client_id: existingClient ? existingClient._id.toString() : null,
     client_exists: Boolean(existingClient),
     client_email: existingClient?.email || null,
-    currency: currency.toUpperCase(),
+    currency: tenantCurrency.toUpperCase(),
     items: processedItems,
     subTotal,
-    taxRate: 0,
-    total: subTotal,
+    taxRate: resolvedTaxRate,
+    taxTotal,
+    total,
     notes: notes || 'Created via AI Assistant',
-    preview_title: `Invoice for ${client_name} (${currency.toUpperCase()} ${subTotal.toLocaleString()})`,
+    preview_title: `Invoice for ${client_name} (${tenantCurrency.toUpperCase()} ${total.toLocaleString()})`,
     requires_approval: true,
   };
 }
@@ -259,8 +298,9 @@ async function proposeCreateClient({ name, email = '', phone = '', address = '' 
   };
 }
 
-async function proposeCreateQuote({ client_name, items = [], notes = '' }, adminId) {
+async function proposeCreateQuote({ client_name, items = [], currency, notes = '', taxRate }, adminId) {
   const Client = mongoose.model('Client');
+  const Setting = mongoose.model('Setting');
 
   const query = {
     name: new RegExp('^' + client_name.trim() + '$', 'i'),
@@ -270,6 +310,27 @@ async function proposeCreateQuote({ client_name, items = [], notes = '' }, admin
 
   let existingClient = await Client.findOne(query).lean();
 
+  let resolvedTaxRate = taxRate;
+  let tenantCurrency = currency;
+
+  if (adminId) {
+    if (resolvedTaxRate === undefined || resolvedTaxRate === null) {
+      const taxSetting = await Setting.findOne({ settingKey: 'default_tax_rate', createdBy: adminId }).lean();
+      if (taxSetting && taxSetting.settingValue !== undefined && taxSetting.settingValue !== '') {
+        resolvedTaxRate = Number(taxSetting.settingValue);
+      }
+    }
+    if (!tenantCurrency) {
+      const currencySetting = await Setting.findOne({ settingKey: 'default_currency_code', createdBy: adminId }).lean();
+      if (currencySetting && currencySetting.settingValue) {
+        tenantCurrency = currencySetting.settingValue;
+      }
+    }
+  }
+
+  if (resolvedTaxRate === undefined || resolvedTaxRate === null) resolvedTaxRate = 0;
+  if (!tenantCurrency) tenantCurrency = 'USD';
+
   const processedItems = items.map((i) => ({
     itemName: i.itemName || 'Item',
     quantity: Number(i.quantity || 1),
@@ -278,18 +339,22 @@ async function proposeCreateQuote({ client_name, items = [], notes = '' }, admin
   }));
 
   const subTotal = processedItems.reduce((sum, item) => sum + item.total, 0);
+  const taxTotal = (subTotal * resolvedTaxRate) / 100;
+  const total = subTotal + taxTotal;
 
   return {
     action_type: 'CREATE_QUOTE',
     client_name: client_name.trim(),
     client_id: existingClient ? existingClient._id.toString() : null,
     client_exists: Boolean(existingClient),
+    currency: tenantCurrency.toUpperCase(),
     items: processedItems,
     subTotal,
-    taxRate: 0,
-    total: subTotal,
+    taxRate: resolvedTaxRate,
+    taxTotal,
+    total,
     notes,
-    preview_title: `Quote for ${client_name} (${subTotal.toLocaleString()})`,
+    preview_title: `Quote for ${client_name} (${tenantCurrency.toUpperCase()} ${total.toLocaleString()})`,
     requires_approval: true,
   };
 }

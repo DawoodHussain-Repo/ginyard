@@ -30,12 +30,16 @@ const summary = async (req, res) => {
 
   const statuses = ['draft', 'pending', 'overdue', 'paid', 'unpaid', 'partially'];
 
-  const userFilter = req.admin
-    ? {
-        createdBy: mongoose.Types.ObjectId.isValid(req.admin._id)
-          ? new mongoose.Types.ObjectId(req.admin._id)
-          : req.admin._id,
-      }
+  const adminIdStr = req.admin?._id ? req.admin._id.toString() : null;
+  const userFilter = adminIdStr
+    ? mongoose.Types.ObjectId.isValid(adminIdStr)
+      ? {
+          $or: [
+            { createdBy: new mongoose.Types.ObjectId(adminIdStr) },
+            { createdBy: adminIdStr },
+          ],
+        }
+      : { createdBy: adminIdStr }
     : {};
 
   const response = await Model.aggregate([

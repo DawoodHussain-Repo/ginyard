@@ -24,6 +24,12 @@ function includeToken() {
   }
 }
 
+function notifyDataUpdated() {
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('erp-data-updated'));
+  }
+}
+
 const request = {
   create: async ({ entity, jsonData }) => {
     try {
@@ -33,6 +39,7 @@ const request = {
         notifyOnSuccess: true,
         notifyOnFailed: true,
       });
+      if (response.data?.success) notifyDataUpdated();
       return response.data;
     } catch (error) {
       return errorHandler(error);
@@ -76,6 +83,7 @@ const request = {
         notifyOnSuccess: true,
         notifyOnFailed: true,
       });
+      if (response.data?.success) notifyDataUpdated();
       return response.data;
     } catch (error) {
       return errorHandler(error);
@@ -93,6 +101,7 @@ const request = {
         notifyOnSuccess: true,
         notifyOnFailed: true,
       });
+      if (response.data?.success) notifyDataUpdated();
       return response.data;
     } catch (error) {
       return errorHandler(error);
@@ -107,6 +116,7 @@ const request = {
         notifyOnSuccess: true,
         notifyOnFailed: true,
       });
+      if (response.data?.success) notifyDataUpdated();
       return response.data;
     } catch (error) {
       return errorHandler(error);

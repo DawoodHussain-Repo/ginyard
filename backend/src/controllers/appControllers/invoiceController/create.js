@@ -38,8 +38,11 @@ const create = async (req, res) => {
     body.expiredDate = exp;
   }
   if (!body.year) body.year = new Date(body.date).getFullYear();
-  if (!body.status) body.status = 'draft';
-  if (body.taxRate === undefined || body.taxRate === null) body.taxRate = 0;
+  if (body.taxRate === undefined || body.taxRate === null) {
+    const Setting = mongoose.model('Setting');
+    const taxSetting = await Setting.findOne({ settingKey: 'default_tax_rate', createdBy: adminId }).lean();
+    body.taxRate = taxSetting && taxSetting.settingValue !== undefined ? Number(taxSetting.settingValue) : 0;
+  }
 
   if (!body.number) {
     const count = await Model.countDocuments({ createdBy: adminId });

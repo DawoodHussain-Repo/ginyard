@@ -44,18 +44,29 @@ export default function DashboardModule() {
     onFetch: fetchPayemntsStats,
   } = useOnFetch();
 
-  const { result: clientResult, isLoading: clientLoading } = useFetch(() =>
-    request.summary({ entity: 'client' })
-  );
+  const {
+    result: clientResult,
+    isLoading: clientLoading,
+    onFetch: fetchClientStats,
+  } = useOnFetch();
+
+  const refreshAllStats = () => {
+    const currency = money_format_settings.default_currency_code || 'USD';
+    fetchInvoicesStats(getStatsData({ entity: 'invoice', currency }));
+    fetchQuotesStats(getStatsData({ entity: 'quote', currency }));
+    fetchPayemntsStats(getStatsData({ entity: 'payment', currency }));
+    fetchClientStats(request.summary({ entity: 'client' }));
+  };
 
   useEffect(() => {
-    const currency = money_format_settings.default_currency_code || null;
+    refreshAllStats();
 
-    if (currency) {
-      fetchInvoicesStats(getStatsData({ entity: 'invoice', currency }));
-      fetchQuotesStats(getStatsData({ entity: 'quote', currency }));
-      fetchPayemntsStats(getStatsData({ entity: 'payment', currency }));
-    }
+    const handleDataUpdate = () => {
+      refreshAllStats();
+    };
+
+    window.addEventListener('erp-data-updated', handleDataUpdate);
+    return () => window.removeEventListener('erp-data-updated', handleDataUpdate);
   }, [money_format_settings.default_currency_code]);
 
   const dataTableColumns = [

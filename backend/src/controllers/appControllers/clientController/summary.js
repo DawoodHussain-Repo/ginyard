@@ -21,7 +21,17 @@ const summary = async (Model, req, res) => {
   let startDate = currentDate.clone().startOf(defaultType);
   let endDate = currentDate.clone().endOf(defaultType);
 
-  const userFilter = req.admin ? { createdBy: req.admin._id } : {};
+  const adminIdStr = req.admin?._id ? req.admin._id.toString() : null;
+  const userFilter = adminIdStr
+    ? mongoose.Types.ObjectId.isValid(adminIdStr)
+      ? {
+          $or: [
+            { createdBy: new mongoose.Types.ObjectId(adminIdStr) },
+            { createdBy: adminIdStr },
+          ],
+        }
+      : { createdBy: adminIdStr }
+    : {};
 
   const pipeline = [
     {

@@ -165,7 +165,7 @@ export default function AiActionPreviewModal({ open, proposal, onClose, onRefine
           <Table
             dataSource={proposal.items}
             columns={columns}
-            rowKey={(r, idx) => idx}
+            rowKey={(record, index) => record.itemName || index}
             pagination={false}
             size="small"
             bordered
