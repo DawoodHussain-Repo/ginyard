@@ -6,7 +6,9 @@ const filter = async (Model, req, res) => {
       message: 'filter not provided correctly',
     });
   }
-  const userFilter = req.admin ? { createdBy: req.admin._id } : {};
+  const userFilter = req.admin
+    ? { $or: [{ createdBy: req.admin._id }, { createdBy: { $exists: false } }, { createdBy: null }] }
+    : {};
   const result = await Model.find({
     removed: false,
     ...userFilter,

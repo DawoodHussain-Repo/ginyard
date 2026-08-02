@@ -1,5 +1,7 @@
 const read = async (Model, req, res) => {
-  const userFilter = req.admin ? { createdBy: req.admin._id } : {};
+  const userFilter = req.admin
+    ? { $or: [{ createdBy: req.admin._id }, { createdBy: { $exists: false } }, { createdBy: null }] }
+    : {};
   // Find document by id
   const result = await Model.findOne({
     _id: req.params.id,

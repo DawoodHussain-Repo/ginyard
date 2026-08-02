@@ -1,5 +1,7 @@
 const update = async (Model, req, res) => {
-  const userFilter = req.admin ? { createdBy: req.admin._id } : {};
+  const userFilter = req.admin
+    ? { $or: [{ createdBy: req.admin._id }, { createdBy: { $exists: false } }, { createdBy: null }] }
+    : {};
   // Find document by id and updates with the required fields
   req.body.removed = false;
   const result = await Model.findOneAndUpdate(
