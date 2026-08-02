@@ -28,7 +28,10 @@ export default function LandingPage() {
       dispatch(
         settingsAction.updateMany({
           entity: 'setting',
-          settings: [{ settingKey: 'app_theme', settingValue: nextTheme }],
+          jsonData: {
+            settings: [{ settingKey: 'app_theme', settingValue: nextTheme }],
+          },
+          options: { notifyOnSuccess: false, notifyOnFailed: false },
         })
       );
     }
