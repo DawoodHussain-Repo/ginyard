@@ -1,4 +1,5 @@
 import CrudModule from '@/modules/CrudModule/CrudModule';
+import TaxForm from '@/forms/TaxForm';
 import useLanguage from '@/locale/useLanguage';
 
 export default function Taxes() {
@@ -60,5 +61,11 @@ export default function Taxes() {
     deleteModalLabels,
   };
 
-  return <CrudModule config={config} />;
+  return (
+    <CrudModule
+      createForm={<TaxForm />}
+      updateForm={<TaxForm isUpdateForm />}
+      config={config}
+    />
+  );
 }
