@@ -41,7 +41,22 @@ const update = async (req, res) => {
   if (!body.year) body.year = previousInvoice.year;
   if (!body.date) body.date = previousInvoice.date;
   if (!body.expiredDate) body.expiredDate = previousInvoice.expiredDate;
-  if (!body.client) body.client = previousInvoice.client;
+  if (body.client) {
+    if (typeof body.client === 'string' && !mongoose.Types.ObjectId.isValid(body.client)) {
+      const Client = mongoose.model('Client');
+      let existingClient = await Client.findOne({
+        name: new RegExp('^' + body.client.trim() + '$', 'i'),
+        removed: false,
+      });
+      if (existingClient) {
+        body.client = existingClient._id;
+      } else {
+        body.client = previousInvoice.client;
+      }
+    }
+  } else {
+    body.client = previousInvoice.client;
+  }
   if (!body.status) body.status = previousInvoice.status;
   if (body.taxRate === undefined) body.taxRate = previousInvoice.taxRate || 0;
 

@@ -39,35 +39,62 @@ async function chat(userMessage, conversationHistory = [], adminId) {
     apiKey: process.env.GROQ_API_KEY,
   });
 
-  const model = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
+  const candidateModels = Array.from(
+    new Set([
+      process.env.GROQ_MODEL,
+      'llama-3.3-70b-versatile',
+      'llama-3.1-70b-versatile',
+      'llama-3.1-8b-instant',
+      'gemma2-9b-it',
+    ])
+  ).filter(Boolean);
 
   const fullSystemPrompt = BASE_SYSTEM_PROMPT + generateCompactSchemaSummary();
 
-  // Build message list
+  // Build message list with capped recent conversation history (last 6 messages)
   const messages = [{ role: 'system', content: fullSystemPrompt }];
 
-  // Add conversation history
   if (conversationHistory && conversationHistory.length > 0) {
-    messages.push(...conversationHistory);
+    const recentHistory = conversationHistory.slice(-6);
+    messages.push(...recentHistory);
   }
 
-  // Add the new user message
   messages.push({ role: 'user', content: userMessage });
 
   const toolCallsMade = [];
   const maxIterations = 5;
-
   let actionProposal = null;
 
+  const getCompletion = async (reqMessages) => {
+    let lastError = null;
+    for (const modelCandidate of candidateModels) {
+      try {
+        return await groq.chat.completions.create({
+          model: modelCandidate,
+          messages: reqMessages,
+          tools: TOOL_DEFINITIONS,
+          tool_choice: 'auto',
+          temperature: 0.1,
+          max_tokens: 1024,
+        });
+      } catch (err) {
+        lastError = err;
+        if (err.status === 429 || err.message?.includes('rate_limit') || err.code === 'rate_limit_exceeded') {
+          console.warn(`Groq model ${modelCandidate} hit rate limit. Trying next candidate model...`);
+          continue;
+        }
+        if (err.status === 400 && (err.code === 'model_decommissioned' || err.message?.includes('decommissioned'))) {
+          console.warn(`Groq model ${modelCandidate} is decommissioned. Trying next candidate model...`);
+          continue;
+        }
+        throw err;
+      }
+    }
+    throw lastError;
+  };
+
   for (let i = 0; i < maxIterations; i++) {
-    const response = await groq.chat.completions.create({
-      model,
-      messages,
-      tools: TOOL_DEFINITIONS,
-      tool_choice: 'auto',
-      temperature: 0.1,
-      max_tokens: 2048,
-    });
+    const response = await getCompletion(messages);
 
     const choice = response.choices[0];
     const message = choice.message;
