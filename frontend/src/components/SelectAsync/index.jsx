@@ -3,7 +3,7 @@ import { request } from '@/request';
 import useFetch from '@/hooks/useFetch';
 import { Select, Tag } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { generate as uniqueId } from 'shortid';
+import { generate as uniqueId } from '@/utils/uniqueId';
 import color from '@/utils/color';
 import useLanguage from '@/locale/useLanguage';
 

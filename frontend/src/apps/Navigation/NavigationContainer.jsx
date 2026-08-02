@@ -6,9 +6,9 @@ import { selectAppSettings } from '@/redux/settings/selectors';
 
 import { useAppContext } from '@/context/appContext';
 import useLanguage from '@/locale/useLanguage';
-import logoIcon from '@/style/images/logo-icon.svg';
-import logoLightTheme from '@/style/images/logo-light-theme.svg';
-import logoDarkTheme from '@/style/images/logo-dark-theme.svg';
+import logoIcon from '@/assets/logos/logo-icon.svg';
+import logoLightTheme from '@/assets/logos/logo-light-theme.svg';
+import logoDarkTheme from '@/assets/logos/logo-dark-theme.svg';
 import useResponsive from '@/hooks/useResponsive';
 import SidebarUserProfile from './SidebarUserProfile';
 

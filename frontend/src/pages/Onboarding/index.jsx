@@ -7,7 +7,7 @@ import { selectCurrentAdmin } from '@/redux/auth/selectors';
 import * as actionTypes from '@/redux/auth/types';
 import { request } from '@/request';
 import { currencyFlag } from '@/utils/currencyList';
-import logoLight from '@/style/images/logo-light-theme.svg';
+import logoLight from '@/assets/logos/logo-light-theme.svg';
 
 const { Title, Text } = Typography;
 const { Option } = Select;

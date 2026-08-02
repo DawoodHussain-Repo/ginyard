@@ -11,8 +11,8 @@ import RegisterForm from '@/forms/RegisterForm';
 import Loading from '@/components/Loading';
 import AuthLayout from '@/layout/AuthLayout';
 import SideContent from './SideContent';
-import logoLight from '@/style/images/logo-light-theme.svg';
-import logoDark from '@/style/images/logo-dark-theme.svg';
+import logoLight from '@/assets/logos/logo-light-theme.svg';
+import logoDark from '@/assets/logos/logo-dark-theme.svg';
 
 const { Content } = Layout;
 const { Title } = Typography;
