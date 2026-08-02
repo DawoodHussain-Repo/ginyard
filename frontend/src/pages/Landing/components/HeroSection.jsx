@@ -41,21 +41,23 @@ export default function HeroSection({ isLoggedIn }) {
           {isLoggedIn ? 'Launch ERP Dashboard' : 'Start 14-Day Free Trial'}
         </Button>
 
-        <Button
-          size="large"
-          style={{
-            height: 48,
-            padding: '0 28px',
-            borderRadius: 8,
-            fontWeight: 600,
-            fontSize: 16,
-            borderColor: 'var(--color-border)',
-            color: 'var(--color-text-dark)',
-          }}
-          onClick={() => navigate('/login')}
-        >
-          Sign In
-        </Button>
+        {!isLoggedIn && (
+          <Button
+            size="large"
+            style={{
+              height: 48,
+              padding: '0 28px',
+              borderRadius: 8,
+              fontWeight: 600,
+              fontSize: 16,
+              borderColor: 'var(--color-border)',
+              color: 'var(--color-text-dark)',
+            }}
+            onClick={() => navigate('/login')}
+          >
+            Sign In
+          </Button>
+        )}
       </div>
 
       {/* Hero Mockup Preview */}
