@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 
 const checkAndCorrectURL = require('./checkAndCorrectURL');
 const sendMail = require('./sendMail');
-const shortid = require('shortid');
+const { generate: uniqueId } = require('@/utils/uniqueId');
 const { loadSettings } = require('@/middlewares/settings');
 
 const { useAppSettings } = require('@/settings');
@@ -43,7 +43,7 @@ const forgetPassword = async (req, res, { userModel }) => {
       message: 'No account with this email has been registered.',
     });
 
-  const resetToken = shortid.generate();
+  const resetToken = uniqueId();
   await UserPassword.findOneAndUpdate(
     { user: user._id },
     { resetToken },
