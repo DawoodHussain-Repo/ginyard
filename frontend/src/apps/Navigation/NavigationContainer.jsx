@@ -91,11 +91,6 @@ function Sidebar({ collapsible, isMobile = false }) {
       label: <Link to={'/taxes'}>{translate('taxes')}</Link>,
     },
     {
-      key: 'landing',
-      icon: <GlobalOutlined />,
-      label: <Link to={'/landing'}>SaaS Landing</Link>,
-    },
-    {
       key: 'settings',
       icon: <SettingOutlined />,
       label: <Link to={'/settings'}>{translate('settings')}</Link>,

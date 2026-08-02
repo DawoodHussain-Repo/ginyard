@@ -42,7 +42,7 @@ export default function Navbar({ isDarkMode, onToggleTheme, isLoggedIn }) {
               }}
               onClick={() => navigate('/')}
             >
-              Go to Dashboard
+              Dashboard
             </Button>
           ) : (
             <>

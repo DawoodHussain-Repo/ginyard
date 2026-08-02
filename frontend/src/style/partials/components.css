@@ -122,8 +122,28 @@
 [data-theme='dark'] .ant-modal-title,
 [data-theme='dark'] .ant-modal-body,
 [data-theme='dark'] .ant-crud-table-title,
-[data-theme='dark'] .ant-dropdown-menu-item {
+[data-theme='dark'] .ant-dropdown-menu-item,
+[data-theme='dark'] .ant-collapse,
+[data-theme='dark'] .ant-collapse-item,
+[data-theme='dark'] .ant-collapse-header,
+[data-theme='dark'] .ant-collapse-header-text,
+[data-theme='dark'] .ant-collapse-content,
+[data-theme='dark'] .ant-collapse-content-box,
+[data-theme='dark'] .ant-collapse-content-box p,
+[data-theme='dark'] .ant-collapse-expand-icon,
+[data-theme='dark'] .ant-checkbox-wrapper,
+[data-theme='dark'] .ant-checkbox-wrapper span,
+[data-theme='dark'] .ant-checkbox + span,
+[data-theme='dark'] .ant-radio-wrapper,
+[data-theme='dark'] .ant-radio-wrapper span {
   color: #f8fafc !important;
+}
+
+[data-theme='dark'] .ant-collapse,
+[data-theme='dark'] .ant-collapse-item,
+[data-theme='dark'] .ant-collapse-content {
+  background-color: var(--color-bg-card, #141417) !important;
+  border-color: var(--color-border, #27272a) !important;
 }
 
 [data-theme='dark'] .ant-table-tbody > tr > td a {

@@ -5,14 +5,16 @@ import { selectAppSettings } from '@/redux/settings/selectors';
 
 export default function Localization({ children }) {
   const appSettings = useSelector(selectAppSettings);
-  const isDark = appSettings?.app_theme === 'dark';
+  const localTheme = typeof window !== 'undefined' ? localStorage.getItem('app_theme') : null;
+  const isDark = (appSettings?.app_theme || localTheme || document.documentElement.getAttribute('data-theme')) === 'dark';
 
   useEffect(() => {
+    const currentTheme = isDark ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    localStorage.setItem('app_theme', currentTheme);
     if (isDark) {
-      document.documentElement.setAttribute('data-theme', 'dark');
       document.body.classList.add('dark-theme');
     } else {
-      document.documentElement.setAttribute('data-theme', 'light');
       document.body.classList.remove('dark-theme');
     }
   }, [isDark]);

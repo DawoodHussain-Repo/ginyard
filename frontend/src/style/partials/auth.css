@@ -34,3 +34,10 @@
 .list-checked-item-left::before{
   left: 0;
 }
+
+[data-theme='dark'] .ant-checkbox-wrapper,
+[data-theme='dark'] .ant-checkbox-wrapper span,
+[data-theme='dark'] .login-form-forgot,
+[data-theme='dark'] .ant-form-item-control-input-content {
+  color: #f8fafc !important;
+}

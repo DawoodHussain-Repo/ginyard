@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectAuth } from '@/redux/auth/selectors';
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
@@ -10,17 +10,28 @@ import FaqSection from './components/FaqSection';
 import Footer from './components/Footer';
 import './Landing.css';
 
+import { settingsAction } from '@/redux/settings/actions';
+import { selectAppSettings } from '@/redux/settings/selectors';
+
 export default function LandingPage() {
+  const dispatch = useDispatch();
   const { isLoggedIn } = useSelector(selectAuth);
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    return document.documentElement.getAttribute('data-theme') === 'dark';
-  });
+  const appSettings = useSelector(selectAppSettings);
+
+  const isDarkMode = (appSettings?.app_theme || document.documentElement.getAttribute('data-theme')) === 'dark';
 
   const toggleTheme = () => {
     const nextTheme = isDarkMode ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', nextTheme);
-    localStorage.setItem('theme', nextTheme);
-    setIsDarkMode(!isDarkMode);
+    localStorage.setItem('app_theme', nextTheme);
+    if (isLoggedIn) {
+      dispatch(
+        settingsAction.updateMany({
+          entity: 'setting',
+          settings: [{ settingKey: 'app_theme', settingValue: nextTheme }],
+        })
+      );
+    }
   };
 
   useEffect(() => {
