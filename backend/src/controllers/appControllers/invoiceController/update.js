@@ -94,7 +94,11 @@ const update = async (req, res) => {
     delete body.currency;
   }
 
-  if (!body.paymentStatus) {
+  if (body.paymentStatus === 'paid') {
+    body['credit'] = total;
+  } else if (body.paymentStatus === 'unpaid') {
+    body['credit'] = 0;
+  } else if (!body.paymentStatus) {
     let paymentStatus =
       calculate.sub(total, discount) <= credit ? 'paid' : credit > 0 ? 'partially' : 'unpaid';
     body['paymentStatus'] = paymentStatus;
