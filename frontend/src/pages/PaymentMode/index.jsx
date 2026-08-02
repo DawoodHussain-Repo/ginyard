@@ -1,4 +1,5 @@
 import CrudModule from '@/modules/CrudModule/CrudModule';
+import PaymentModeForm from '@/forms/PaymentModeForm';
 import useLanguage from '@/locale/useLanguage';
 
 export default function PaymentMode() {
@@ -59,5 +60,11 @@ export default function PaymentMode() {
     deleteModalLabels,
   };
 
-  return <CrudModule config={config} />;
+  return (
+    <CrudModule
+      createForm={<PaymentModeForm />}
+      updateForm={<PaymentModeForm isUpdateForm />}
+      config={config}
+    />
+  );
 }

@@ -1,5 +1,7 @@
 @import './partials/rest.css';
-@import './partials/customAntd.css';
+@import './partials/tokens.css';
+@import './partials/buttons.css';
+@import './partials/components.css';
 @import './partials/layout.css';
 @import './partials/core.css';
 

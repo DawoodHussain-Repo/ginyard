@@ -1,0 +1,224 @@
+/* ═══════════════════════════════════════════════════════════════
+   COMPONENT STYLES
+   Cards, Tables, PageHeader, Drawers, Modals, Menus, Misc
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Cards ── */
+.ant-card {
+  background-color: var(--color-bg-card) !important;
+  border-color: var(--color-border) !important;
+  transition: all var(--transition-smooth) !important;
+}
+
+.whiteBox {
+  border-radius: 16px !important;
+  background: var(--color-bg-card) !important;
+  border: 1px solid var(--color-border) !important;
+  box-shadow: var(--shadow-md) !important;
+  transition: all var(--transition-smooth) !important;
+}
+
+.whiteBox h3 {
+  color: var(--color-text-dark) !important;
+}
+
+/* ── Dropdown Menus ── */
+.headerIcon .ant-dropdown-menu {
+  border-radius: 10px;
+  background: var(--color-bg-card) !important;
+  padding: 8px;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--color-border);
+}
+
+.headerIcon .ant-dropdown-menu-item:hover,
+.headerIcon .ant-dropdown-menu-item.ant-dropdown-menu-item-active {
+  background: var(--color-primary-lime) !important;
+  color: var(--color-text-white) !important;
+  border-radius: 8px;
+}
+
+/* ── Login / Auth ── */
+.App {
+  text-align: center;
+}
+
+.login-form button[type='submit'] {
+  margin-bottom: 20px;
+}
+
+.login-form-forgot {
+  float: right;
+  color: var(--color-primary-lime-hover);
+}
+
+.login-form-button {
+  width: 100%;
+}
+
+/* ── Tables ── */
+.ant-table-thead > tr > th {
+  font-weight: 700;
+  background: var(--color-bg-hover) !important;
+  color: var(--color-text-dark) !important;
+  border-bottom: 1px solid var(--color-border) !important;
+}
+
+.ant-table-tbody > tr > td {
+  border-bottom: 1px solid var(--color-border) !important;
+  background: var(--color-bg-card) !important;
+  color: var(--color-text-dark) !important;
+  transition: all var(--transition-smooth) !important;
+}
+
+.ant-table-tbody > tr:hover > td {
+  background: var(--color-bg-hover) !important;
+}
+
+.ant-table-tbody > tr > td a {
+  color: var(--color-primary-lime) !important;
+  font-weight: 600 !important;
+}
+
+.ant-table-tbody > tr > td a:hover {
+  color: var(--color-primary-lime-hover) !important;
+}
+
+/* ── PageHeader — Title & Back Button ── */
+.ant-page-header-heading-title,
+.ant-page-header-heading-sub-title {
+  color: var(--color-text-dark) !important;
+}
+
+.ant-page-header-back,
+.ant-page-header-back-button,
+.ant-page-header-back-button .anticon,
+.ant-page-header-back-button .anticon svg {
+  color: var(--color-text-dark) !important;
+  fill: var(--color-text-dark) !important;
+}
+
+/* ── Dark Mode Bulk Text Color Overrides ── */
+[data-theme='dark'] .ant-page-header-back,
+[data-theme='dark'] .ant-page-header-back-button,
+[data-theme='dark'] .ant-page-header-back-button .anticon,
+[data-theme='dark'] .ant-page-header-back-button .anticon svg,
+[data-theme='dark'] .ant-page-header-back-button .anticon path,
+[data-theme='dark'] .ant-table,
+[data-theme='dark'] .ant-table-thead > tr > th,
+[data-theme='dark'] .ant-table-tbody > tr > td,
+[data-theme='dark'] .ant-table-tbody > tr > td span,
+[data-theme='dark'] .ant-card-head-title,
+[data-theme='dark'] .ant-card-body,
+[data-theme='dark'] .ant-page-header-heading-title,
+[data-theme='dark'] .ant-page-header-heading-sub-title,
+[data-theme='dark'] .ant-descriptions-item-label,
+[data-theme='dark'] .ant-descriptions-item-content,
+[data-theme='dark'] .ant-form-item-label > label,
+[data-theme='dark'] .ant-statistic-title,
+[data-theme='dark'] .ant-statistic-content,
+[data-theme='dark'] .ant-list-item,
+[data-theme='dark'] .ant-modal-header,
+[data-theme='dark'] .ant-modal-title,
+[data-theme='dark'] .ant-modal-body,
+[data-theme='dark'] .ant-crud-table-title,
+[data-theme='dark'] .ant-dropdown-menu-item {
+  color: #f8fafc !important;
+}
+
+[data-theme='dark'] .ant-table-tbody > tr > td a {
+  color: #38bdf8 !important;
+}
+
+/* ── Drawers ── */
+.ant-drawer-content,
+.ant-drawer-header,
+.ant-drawer-body,
+.ant-drawer-wrapper-body {
+  background-color: var(--color-bg-card) !important;
+  color: var(--color-text-dark) !important;
+}
+
+.ant-drawer-header {
+  border-bottom: 1px solid var(--color-border) !important;
+}
+
+.ant-drawer-title,
+.ant-drawer-close,
+.ant-drawer-close .anticon {
+  color: var(--color-text-dark) !important;
+}
+
+[data-theme='dark'] .ant-drawer-content,
+[data-theme='dark'] .ant-drawer-header,
+[data-theme='dark'] .ant-drawer-body,
+[data-theme='dark'] .ant-drawer-wrapper-body {
+  background-color: var(--color-bg-card, #141417) !important;
+  color: #f8fafc !important;
+}
+
+[data-theme='dark'] .ant-drawer-title,
+[data-theme='dark'] .ant-drawer-close,
+[data-theme='dark'] .ant-drawer-close .anticon {
+  color: #f8fafc !important;
+}
+
+[data-theme='dark'] .ant-descriptions-title,
+[data-theme='dark'] .ant-descriptions-item-label,
+[data-theme='dark'] .ant-descriptions-item-content,
+[data-theme='dark'] .ant-statistic-title,
+[data-theme='dark'] .ant-statistic-content,
+[data-theme='dark'] .ant-statistic-content-value,
+[data-theme='dark'] .ant-page-header-heading-title,
+[data-theme='dark'] .ant-page-header-heading-sub-title {
+  color: #f8fafc !important;
+}
+
+/* ── Menu ── */
+.ant-menu-inline {
+  padding-bottom: 20px;
+}
+
+.ant-menu-item {
+  height: 40px !important;
+  line-height: 40px !important;
+}
+
+/* ── Tabs ── */
+.tabContent .ant-tabs-right > .ant-tabs-content-holder,
+.tabContent .ant-tabs-right > div > .ant-tabs-content-holder {
+  border-right: none;
+}
+
+.tabContent .ant-tabs .ant-tabs-tab + .ant-tabs-tab {
+  margin: 0;
+}
+
+/* ── Select ── */
+.ant-select-show-search:where(.css-dev-only-do-not-override-2q8sxy).ant-select:not(.ant-select-customize-input) .ant-select-selector {
+  cursor: pointer;
+}
+
+/* ── Responsive ── */
+@media (max-width: 992px) {
+  .auth-desktop-container {
+    flex-direction: column !important;
+    position: relative !important;
+  }
+  .auth-side-panel {
+    display: none !important;
+  }
+  .auth-form-panel {
+    position: relative !important;
+    left: 0 !important;
+    width: 100% !important;
+    transform: none !important;
+  }
+  .tabContent .ant-tabs-right > .ant-tabs-content-holder > .ant-tabs-content > .ant-tabs-tabpane {
+    padding-right: 0;
+    margin-top: 30px;
+  }
+  .tabContent .ant-tabs {
+    display: block;
+  }
+}

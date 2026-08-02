@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { Input, Button, Avatar, Typography, Spin, Tag } from 'antd';
 import {
   RobotOutlined,
@@ -19,20 +19,48 @@ const SUGGESTED_QUESTIONS = [
   'How much income did I earn last quarter?',
 ];
 
+const INITIAL_MESSAGE = {
+  role: 'assistant',
+  content:
+    'Hi! I\'m your Ginyard AI financial assistant. Ask me anything about your finances — I\'ll look up the real numbers from your accounting data.\n\nTry something like "How much did I spend on software this month?" or "Which clients haven\'t paid me?"',
+};
+
+const STORAGE_KEY = 'ginyard_ai_chat_messages';
+
+function loadPersistedMessages() {
+  try {
+    const stored = sessionStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
+  } catch {
+    // Corrupted storage — fall through
+  }
+  return [INITIAL_MESSAGE];
+}
+
+function persistMessages(msgs) {
+  try {
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(msgs));
+  } catch {
+    // Storage full — ignore silently
+  }
+}
+
 export default function ChatPanel() {
-  const [messages, setMessages] = useState([
-    {
-      role: 'assistant',
-      content:
-        'Hi! I\'m your Ginyard AI financial assistant. Ask me anything about your finances — I\'ll look up the real numbers from your accounting data.\n\nTry something like "How much did I spend on software this month?" or "Which clients haven\'t paid me?"',
-    },
-  ]);
+  const [messages, setMessages] = useState(loadPersistedMessages);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [toolCalls, setToolCalls] = useState([]);
   const [proposal, setProposal] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const messagesEndRef = useRef(null);
+
+  // Persist messages whenever they change
+  useEffect(() => {
+    persistMessages(messages);
+  }, [messages]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -42,7 +70,7 @@ export default function ChatPanel() {
     scrollToBottom();
   }, [messages, loading]);
 
-  const sendMessage = async (textToSend) => {
+  const sendMessage = useCallback(async (textToSend) => {
     const text = textToSend || input;
     if (!text.trim() || loading) return;
 
@@ -102,7 +130,7 @@ export default function ChatPanel() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [input, loading, messages]);
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {

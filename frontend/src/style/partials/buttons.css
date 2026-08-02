@@ -1,0 +1,231 @@
+/* ═══════════════════════════════════════════════════════════════
+   BUTTON STYLES
+   Primary, Default, Dashed, Danger + icon alignment
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── System-Wide Button & Icon Vertical Center ── */
+.ant-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  line-height: 1 !important;
+}
+
+.ant-btn .anticon {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  vertical-align: 0 !important;
+  line-height: 1 !important;
+}
+
+.ant-btn .anticon svg {
+  display: block !important;
+  margin: 0 !important;
+}
+
+.ant-btn span {
+  display: inline-flex !important;
+  align-items: center !important;
+  line-height: 1 !important;
+}
+
+/* Modal, Drawer, and Icon-Only Close Buttons alignment */
+.ant-modal-close,
+.ant-drawer-close,
+.ant-btn-text,
+.ant-btn-icon-only {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.ant-modal-close-x {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: 100% !important;
+  line-height: 1 !important;
+}
+
+/* ── Primary Button — Flat Premium Tone ── */
+.ant-btn-primary {
+  background-color: var(--color-primary-lime) !important;
+  border-color: var(--color-primary-lime) !important;
+  color: var(--color-text-white) !important;
+  font-weight: 600 !important;
+  box-shadow: none !important;
+  transition: background-color 150ms ease, border-color 150ms ease !important;
+}
+
+.ant-btn-primary *,
+.ant-btn-primary .anticon,
+.ant-btn-primary .anticon svg,
+.ant-btn-primary .anticon path,
+.ant-btn-primary span,
+.ant-btn-primary a {
+  color: var(--color-text-white) !important;
+  fill: var(--color-text-white) !important;
+  transition: none !important;
+}
+
+.ant-btn-primary:hover,
+.ant-btn-primary:focus {
+  background-color: var(--color-primary-lime-hover) !important;
+  border-color: var(--color-primary-lime-hover) !important;
+  color: var(--color-text-white) !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+/* ── Default / Outline Buttons ── */
+.ant-btn-default {
+  background-color: var(--color-bg-card) !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-text-dark) !important;
+  transition: all 180ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.ant-btn-default *,
+.ant-btn-default .anticon,
+.ant-btn-default .anticon svg,
+.ant-btn-default span,
+.ant-btn-default a {
+  color: var(--color-text-dark) !important;
+  fill: var(--color-text-dark) !important;
+  transition: color 180ms ease !important;
+}
+
+.ant-btn-default:hover,
+.ant-btn-default:focus {
+  background-color: #e4e4e7 !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-text-dark) !important;
+}
+
+.ant-btn-default:hover *,
+.ant-btn-default:hover .anticon,
+.ant-btn-default:hover .anticon svg,
+.ant-btn-default:hover span,
+.ant-btn-default:hover a,
+.ant-btn-default:focus *,
+.ant-btn-default:focus .anticon,
+.ant-btn-default:focus .anticon svg,
+.ant-btn-default:focus span,
+.ant-btn-default:focus a {
+  color: var(--color-text-dark) !important;
+  fill: var(--color-text-dark) !important;
+}
+
+[data-theme='dark'] .ant-btn-default:hover,
+[data-theme='dark'] .ant-btn-default:focus {
+  background-color: #27272a !important;
+  border-color: var(--color-border) !important;
+}
+
+/* ── Dashed Chip Buttons ── */
+.ant-btn-dashed {
+  background-color: var(--color-primary-lime-light) !important;
+  border-color: var(--color-primary-lime-border) !important;
+  color: var(--color-primary-lime-hover) !important;
+}
+
+.ant-btn-dashed *,
+.ant-btn-dashed span {
+  color: var(--color-primary-lime-hover) !important;
+  transition: none !important;
+}
+
+.ant-btn-dashed:hover {
+  background-color: var(--color-primary-lime) !important;
+  border-color: var(--color-primary-lime) !important;
+  color: var(--color-text-white) !important;
+}
+
+.ant-btn-dashed:hover *,
+.ant-btn-dashed:hover span {
+  color: var(--color-text-white) !important;
+}
+
+/* ── Danger / Delete / Logout Buttons ── */
+.ant-btn-dangerous,
+.ant-btn-primary-dangerous,
+.ant-btn[danger],
+.sidebar-logout-btn,
+.delete-btn,
+.btn-delete,
+.ant-btn-dangerous:hover,
+.ant-btn-dangerous:focus,
+.ant-btn-dangerous:active,
+.ant-btn-primary-dangerous:hover,
+.ant-btn-primary-dangerous:focus,
+.ant-btn-primary-dangerous:active,
+.ant-btn[danger]:hover,
+.ant-btn[danger]:focus,
+.ant-btn[danger]:active,
+.sidebar-logout-btn:hover,
+.sidebar-logout-btn:focus,
+.sidebar-logout-btn:active,
+.delete-btn:hover,
+.delete-btn:focus,
+.delete-btn:active,
+.btn-delete:hover,
+.btn-delete:focus,
+.btn-delete:active {
+  background-color: var(--color-danger-red, #ef4444) !important;
+  border-color: var(--color-danger-red, #ef4444) !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
+}
+
+.ant-btn-dangerous:hover,
+.ant-btn-primary-dangerous:hover,
+.ant-btn[danger]:hover,
+.sidebar-logout-btn:hover,
+.delete-btn:hover,
+.btn-delete:hover {
+  background-color: var(--color-danger-red-hover, #dc2626) !important;
+  border-color: var(--color-danger-red-hover, #dc2626) !important;
+}
+
+.ant-btn-dangerous *,
+.ant-btn-dangerous .anticon,
+.ant-btn-dangerous .anticon svg,
+.ant-btn-dangerous .anticon path,
+.ant-btn-dangerous span,
+.ant-btn-dangerous a,
+.ant-btn-primary-dangerous *,
+.ant-btn-primary-dangerous .anticon,
+.ant-btn-primary-dangerous .anticon svg,
+.ant-btn-primary-dangerous .anticon path,
+.ant-btn-primary-dangerous span,
+.ant-btn-primary-dangerous a,
+.ant-btn[danger] *,
+.ant-btn[danger] .anticon,
+.ant-btn[danger] .anticon svg,
+.ant-btn[danger] .anticon path,
+.ant-btn[danger] span,
+.ant-btn[danger] a,
+.sidebar-logout-btn *,
+.sidebar-logout-btn .anticon,
+.sidebar-logout-btn .anticon svg,
+.sidebar-logout-btn .anticon path,
+.sidebar-logout-btn span,
+.sidebar-logout-btn a,
+.delete-btn *,
+.delete-btn .anticon,
+.delete-btn .anticon svg,
+.delete-btn .anticon path,
+.delete-btn span,
+.delete-btn a,
+.btn-delete *,
+.btn-delete .anticon,
+.btn-delete .anticon svg,
+.btn-delete .anticon path,
+.btn-delete span,
+.btn-delete a {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+}

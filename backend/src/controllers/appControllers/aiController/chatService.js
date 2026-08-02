@@ -43,7 +43,6 @@ async function chat(userMessage, conversationHistory = [], adminId) {
     new Set([
       process.env.GROQ_MODEL,
       'llama-3.3-70b-versatile',
-      'llama-3.1-70b-versatile',
       'llama-3.1-8b-instant',
       'gemma2-9b-it',
     ])
@@ -62,8 +61,11 @@ async function chat(userMessage, conversationHistory = [], adminId) {
   messages.push({ role: 'user', content: userMessage });
 
   const toolCallsMade = [];
-  const maxIterations = 5;
+  const maxIterations = 3;
   let actionProposal = null;
+  let lastProposalToolKey = null;
+
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
   const getCompletion = async (reqMessages) => {
     let lastError = null;
@@ -81,6 +83,7 @@ async function chat(userMessage, conversationHistory = [], adminId) {
         lastError = err;
         if (err.status === 429 || err.message?.includes('rate_limit') || err.code === 'rate_limit_exceeded') {
           console.warn(`Groq model ${modelCandidate} hit rate limit. Trying next candidate model...`);
+          await sleep(1000);
           continue;
         }
         if (err.status === 400 && (err.code === 'model_decommissioned' || err.message?.includes('decommissioned'))) {
@@ -116,6 +119,7 @@ async function chat(userMessage, conversationHistory = [], adminId) {
       });
 
       // Execute each tool
+      let loopDetected = false;
       for (const toolCall of message.tool_calls) {
         const toolName = toolCall.function.name;
         let args = {};
@@ -126,6 +130,17 @@ async function chat(userMessage, conversationHistory = [], adminId) {
         }
 
         toolCallsMade.push(toolName);
+
+        // Detect duplicate propose_* tool calls (loop) — break early
+        if (toolName.startsWith('propose_')) {
+          const toolKey = toolName + ':' + JSON.stringify(args);
+          if (lastProposalToolKey === toolKey) {
+            loopDetected = true;
+            console.warn(`Loop detected: ${toolName} called with same args twice. Breaking early.`);
+            break;
+          }
+          lastProposalToolKey = toolKey;
+        }
 
         const result = await executeTool(toolName, args, adminId);
 
@@ -144,6 +159,31 @@ async function chat(userMessage, conversationHistory = [], adminId) {
           tool_call_id: toolCall.id,
           content: result,
         });
+      }
+
+      // If we already captured an actionProposal from a propose_* tool, return early
+      if (actionProposal || loopDetected) {
+        // Do one final completion without tools to get a summary response
+        try {
+          messages.push({ role: 'user', content: 'Summarize what you proposed in 1-2 sentences.' });
+          const finalResponse = await groq.chat.completions.create({
+            model: candidateModels[0] || 'llama-3.3-70b-versatile',
+            messages: messages.filter((m) => m.role !== 'tool'),
+            temperature: 0.1,
+            max_tokens: 256,
+          });
+          return {
+            response: finalResponse.choices[0]?.message?.content || 'Action proposed. Please review and approve.',
+            tool_calls_made: toolCallsMade,
+            action_proposal: actionProposal,
+          };
+        } catch {
+          return {
+            response: 'Action proposed. Please review and approve.',
+            tool_calls_made: toolCallsMade,
+            action_proposal: actionProposal,
+          };
+        }
       }
 
       // Continue loop — model will see tool results

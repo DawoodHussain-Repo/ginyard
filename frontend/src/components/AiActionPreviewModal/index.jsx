@@ -40,7 +40,7 @@ export default function AiActionPreviewModal({ open, proposal, onClose, onRefine
           client: proposal.client_name,
           items: proposal.items,
           status: proposal.status || 'draft',
-          paymentStatus: proposal.paymentStatus,
+          paymentStatus: proposal.paymentStatus || 'unpaid',
           notes: proposal.notes || '',
           taxRate: proposal.taxRate || 0,
         };
@@ -275,12 +275,34 @@ export default function AiActionPreviewModal({ open, proposal, onClose, onRefine
           </div>
         )}
 
+        {/* Status & Payment Status for Update Actions */}
+        {(proposal.action_type === 'UPDATE_INVOICE' || proposal.action_type === 'UPDATE_QUOTE') && (
+          <div style={{ marginBottom: 16, display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
+            {proposal.status && (
+              <span>
+                <Text type="secondary" style={{ marginRight: 4 }}>Status:</Text>
+                <Tag color={proposal.status === 'sent' ? 'blue' : proposal.status === 'draft' ? 'default' : 'green'}>
+                  {proposal.status.toUpperCase()}
+                </Tag>
+              </span>
+            )}
+            {proposal.paymentStatus && proposal.action_type === 'UPDATE_INVOICE' && (
+              <span>
+                <Text type="secondary" style={{ marginRight: 4 }}>Payment:</Text>
+                <Tag color={proposal.paymentStatus === 'paid' ? 'green' : proposal.paymentStatus === 'partially' ? 'orange' : 'red'}>
+                  {proposal.paymentStatus.toUpperCase()}
+                </Tag>
+              </span>
+            )}
+          </div>
+        )}
+
         {/* Items Table */}
         {proposal.items && proposal.items.length > 0 && (
           <Table
             dataSource={proposal.items}
             columns={columns}
-            rowKey={(record, index) => record._id || record.itemName || `item-${index}`}
+            rowKey={(record) => record._id || record.itemName || `item-${Math.random()}`}
             pagination={false}
             size="small"
             bordered
