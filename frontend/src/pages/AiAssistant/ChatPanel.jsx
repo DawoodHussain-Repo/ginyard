@@ -111,20 +111,31 @@ export default function ChatPanel() {
           setModalOpen(true);
         }
       } else {
+        const rawMsg = res?.message || res?.result?.response || '';
+        const userFriendlyMsg =
+          typeof rawMsg === 'string' &&
+          rawMsg.length > 0 &&
+          !rawMsg.includes('400') &&
+          !rawMsg.includes('{') &&
+          !rawMsg.includes('tool_use_failed') &&
+          !rawMsg.includes('failed_generation')
+            ? rawMsg
+            : 'The AI assistant is temporarily busy or rate-limited. Please rephrase your prompt or try again in a moment.';
+
         setMessages((prev) => [
           ...prev,
           {
             role: 'assistant',
-            content: `Error: ${res.message || 'Failed to get response'}`,
+            content: userFriendlyMsg,
           },
         ]);
       }
-    } catch (err) {
+    } catch {
       setMessages((prev) => [
         ...prev,
         {
           role: 'assistant',
-          content: `Connection error: ${err.message || 'Failed to connect to AI server'}`,
+          content: 'The AI service is temporarily busy. Please try again in a moment.',
         },
       ]);
     } finally {

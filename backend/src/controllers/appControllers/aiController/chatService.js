@@ -8,6 +8,7 @@ const Groq = require('groq-sdk');
 const { TOOL_DEFINITIONS } = require('./toolDefinitions');
 const { executeTool } = require('./toolExecutor');
 const { generateCompactSchemaSummary } = require('./mongooseSchemaReflect');
+const logger = require('@/utils/logger');
 
 const BASE_SYSTEM_PROMPT = `You are Ledgerly AI, an intelligent financial assistant for a business accounting system.
 
@@ -81,23 +82,38 @@ async function chat(userMessage, conversationHistory = [], adminId) {
         });
       } catch (err) {
         lastError = err;
+        logger.error(`Groq Model Error [${modelCandidate}]: %s`, err.stack || err.message || JSON.stringify(err));
+
         if (err.status === 429 || err.message?.includes('rate_limit') || err.code === 'rate_limit_exceeded') {
-          console.warn(`Groq model ${modelCandidate} hit rate limit. Trying next candidate model...`);
+          logger.warn(`Groq model ${modelCandidate} hit rate limit. Trying next candidate model...`);
           await sleep(1000);
           continue;
         }
-        if (err.status === 400 && (err.code === 'model_decommissioned' || err.message?.includes('decommissioned'))) {
-          console.warn(`Groq model ${modelCandidate} is decommissioned. Trying next candidate model...`);
+        if (err.status === 400 || err.code === 'tool_use_failed' || err.message?.includes('Failed to call a function')) {
+          logger.warn(`Groq model ${modelCandidate} tool call failed. Trying next candidate model...`);
           continue;
         }
-        throw err;
+        if (err.status === 400 && (err.code === 'model_decommissioned' || err.message?.includes('decommissioned'))) {
+          logger.warn(`Groq model ${modelCandidate} is decommissioned. Trying next candidate model...`);
+          continue;
+        }
+        // For other errors, continue attempting remaining models before throwing
+        continue;
       }
     }
-    throw lastError;
+    logger.error('All Groq model candidates failed: %s', lastError?.stack || lastError?.message || JSON.stringify(lastError));
+    return null;
   };
 
   for (let i = 0; i < maxIterations; i++) {
     const response = await getCompletion(messages);
+    if (!response || !response.choices || response.choices.length === 0) {
+      return {
+        response: "The AI service is currently busy or rate-limited. Please try again in a moment or rephrase your request.",
+        tool_calls_made: toolCallsMade,
+        action_proposal: actionProposal,
+      };
+    }
 
     const choice = response.choices[0];
     const message = choice.message;

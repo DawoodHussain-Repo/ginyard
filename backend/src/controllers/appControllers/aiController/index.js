@@ -11,6 +11,8 @@ const { generateInsights } = require('./insights');
  * POST /api/ai/chat
  * Body: { message: string, history: [{ role, content }] }
  */
+const logger = require('@/utils/logger');
+
 const chatHandler = async (req, res) => {
   try {
     let userMessage = req.body.message;
@@ -43,11 +45,15 @@ const chatHandler = async (req, res) => {
       message: 'Chat processed successfully',
     });
   } catch (err) {
-    console.error('AI Chat Error:', err);
-    return res.status(500).json({
+    logger.error('AI Chat Controller Error: %s', err.stack || err.message || JSON.stringify(err));
+    return res.status(200).json({
       success: false,
-      result: null,
-      message: `Chat processing failed: ${err.message}`,
+      result: {
+        response: 'The AI assistant is temporarily busy or rate-limited. Please try rephrasing your prompt or try again in a moment.',
+        tool_calls_made: [],
+        action_proposal: null,
+      },
+      message: 'The AI service is temporarily busy. Please try again in a moment.',
     });
   }
 };
