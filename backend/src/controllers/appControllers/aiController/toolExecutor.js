@@ -13,6 +13,11 @@ const {
 } = require('./tools/queryExecutors');
 
 const {
+  getQuotes,
+  getInvoices,
+} = require('./tools/recordQueryExecutors');
+
+const {
   proposeCreateInvoice,
   proposeCreateClient,
   proposeCreateQuote,
@@ -31,6 +36,8 @@ const {
 const TOOL_HANDLERS = {
   get_expenses: getExpenses,
   get_income: getIncome,
+  get_quotes: getQuotes,
+  get_invoices: getInvoices,
   get_cash_flow_summary: getCashFlowSummary,
   get_overdue_invoices: getOverdueInvoices,
   get_top_vendors: getTopVendors,
@@ -65,5 +72,7 @@ module.exports = {
   executeTool,
   getExpenses,
   getIncome,
+  getQuotes,
+  getInvoices,
   getOverdueInvoices,
 };

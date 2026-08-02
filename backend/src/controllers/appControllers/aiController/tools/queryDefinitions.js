@@ -61,6 +61,57 @@ const QUERY_TOOL_DEFINITIONS = [
   {
     type: 'function',
     function: {
+      name: 'get_quotes',
+      description:
+        'Retrieve quotes or quotations from the accounting system. ' +
+        'Returns a list of quote records with quote number, client name, total amount, status, date, and line items. ' +
+        'Use this whenever the user asks to see, show, find, view, or get quotes, estimates, or latest quotation.',
+      parameters: {
+        type: 'object',
+        properties: {
+          client_name: { type: 'string', description: 'Optional client name filter' },
+          status: {
+            type: 'string',
+            enum: ['draft', 'pending', 'sent', 'accepted', 'declined'],
+            description: 'Optional quote status filter',
+          },
+          limit: { type: 'integer', description: 'Maximum number of quotes to return. Defaults to 5.' },
+        },
+        required: [],
+      },
+    },
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'get_invoices',
+      description:
+        'Retrieve invoices from the accounting system. ' +
+        'Returns a list of invoice records with invoice number, client name, total amount, status, payment status, date, and line items. ' +
+        'Use this whenever the user asks to see, show, find, view, or get invoices.',
+      parameters: {
+        type: 'object',
+        properties: {
+          client_name: { type: 'string', description: 'Optional client name filter' },
+          status: {
+            type: 'string',
+            enum: ['draft', 'pending', 'sent', 'paid', 'unpaid', 'partially'],
+            description: 'Optional invoice status filter',
+          },
+          paymentStatus: {
+            type: 'string',
+            enum: ['paid', 'unpaid', 'partially'],
+            description: 'Optional payment status filter',
+          },
+          limit: { type: 'integer', description: 'Maximum number of invoices to return. Defaults to 5.' },
+        },
+        required: [],
+      },
+    },
+  },
+  {
+    type: 'function',
+    function: {
       name: 'get_cash_flow_summary',
       description:
         'Get a cash flow summary comparing total income vs total expenses for a time period. ' +
