@@ -18,9 +18,9 @@ const chatHandler = async (req, res) => {
     let userMessage = req.body.message;
     let history = req.body.history || [];
 
-    if (!userMessage && Array.isArray(req.body.messages) && req.body.messages.length > 0) {
+    if (Array.isArray(req.body.messages) && req.body.messages.length > 0) {
       const lastMsg = req.body.messages[req.body.messages.length - 1];
-      userMessage = lastMsg?.content;
+      if (!userMessage) userMessage = lastMsg?.content;
       history = req.body.messages.slice(0, -1);
     }
 

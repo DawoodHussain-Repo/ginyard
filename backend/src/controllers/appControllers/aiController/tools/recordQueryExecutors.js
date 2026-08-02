@@ -4,11 +4,24 @@
 
 const mongoose = require('mongoose');
 
+function buildTenantQuery(adminId) {
+  const query = { removed: false };
+  if (adminId) {
+    const adminIdStr = adminId.toString();
+    query.$or = [
+      { createdBy: mongoose.Types.ObjectId.isValid(adminIdStr) ? new mongoose.Types.ObjectId(adminIdStr) : adminIdStr },
+      { createdBy: adminIdStr },
+      { createdBy: { $exists: false } },
+      { createdBy: null },
+    ];
+  }
+  return query;
+}
+
 async function getQuotes({ client_name, status, limit = 5 } = {}, adminId) {
   const Quote = mongoose.model('Quote');
-  const query = { removed: false };
+  const query = buildTenantQuery(adminId);
 
-  if (adminId) query.createdBy = adminId;
   if (status) query.status = status;
 
   if (client_name) {
@@ -47,9 +60,8 @@ async function getQuotes({ client_name, status, limit = 5 } = {}, adminId) {
 
 async function getInvoices({ client_name, status, paymentStatus, limit = 5 } = {}, adminId) {
   const Invoice = mongoose.model('Invoice');
-  const query = { removed: false };
+  const query = buildTenantQuery(adminId);
 
-  if (adminId) query.createdBy = adminId;
   if (status) query.status = status;
   if (paymentStatus) query.paymentStatus = paymentStatus;
 

@@ -53,11 +53,11 @@ async function chat(userMessage, conversationHistory = [], adminId) {
 
   const fullSystemPrompt = BASE_SYSTEM_PROMPT + generateCompactSchemaSummary();
 
-  // Build message list with capped recent conversation history (last 6 messages)
+  // Build message list with capped recent conversation history (last 10 messages)
   const messages = [{ role: 'system', content: fullSystemPrompt }];
 
   if (conversationHistory && conversationHistory.length > 0) {
-    const recentHistory = conversationHistory.slice(-6);
+    const recentHistory = conversationHistory.slice(-10);
     messages.push(...recentHistory);
   }
 
