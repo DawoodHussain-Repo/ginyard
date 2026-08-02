@@ -20,7 +20,17 @@ const update = async (req, res) => {
     });
   }
 
-  const userFilter = req.admin ? { createdBy: req.admin._id } : {};
+  const adminIdStr = req.admin?._id ? req.admin._id.toString() : null;
+  const userFilter = adminIdStr
+    ? mongoose.Types.ObjectId.isValid(adminIdStr)
+      ? {
+          $or: [
+            { createdBy: new mongoose.Types.ObjectId(adminIdStr) },
+            { createdBy: adminIdStr },
+          ],
+        }
+      : { createdBy: adminIdStr }
+    : {};
 
   const previousInvoice = await Model.findOne({
     _id: req.params.id,
@@ -28,9 +38,19 @@ const update = async (req, res) => {
     ...userFilter,
   });
 
-  const { credit } = previousInvoice;
+  if (!previousInvoice) {
+    return res.status(404).json({
+      success: false,
+      result: null,
+      message: 'Invoice not found',
+    });
+  }
 
-  const { items = [], taxRate = 0, discount = 0 } = req.body;
+  const credit = previousInvoice.credit || 0;
+
+  const items = req.body.items && req.body.items.length > 0 ? req.body.items : previousInvoice.items || [];
+  const taxRate = req.body.taxRate !== undefined ? req.body.taxRate : previousInvoice.taxRate || 0;
+  const discount = req.body.discount !== undefined ? req.body.discount : previousInvoice.discount || 0;
 
   if (items.length === 0) {
     return res.status(400).json({
@@ -64,11 +84,12 @@ const update = async (req, res) => {
   if (body.hasOwnProperty('currency')) {
     delete body.currency;
   }
-  // Find document by id and updates with the required fields
 
-  let paymentStatus =
-    calculate.sub(total, discount) === credit ? 'paid' : credit > 0 ? 'partially' : 'unpaid';
-  body['paymentStatus'] = paymentStatus;
+  if (!body.paymentStatus) {
+    let paymentStatus =
+      calculate.sub(total, discount) <= credit ? 'paid' : credit > 0 ? 'partially' : 'unpaid';
+    body['paymentStatus'] = paymentStatus;
+  }
 
   const result = await Model.findOneAndUpdate({ _id: req.params.id, removed: false, ...userFilter }, body, {
     new: true, // return the new result instead of the old one

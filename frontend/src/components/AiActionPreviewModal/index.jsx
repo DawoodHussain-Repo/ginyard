@@ -34,6 +34,29 @@ export default function AiActionPreviewModal({ open, proposal, onClose, onRefine
         } else {
           message.error(res.message || 'Failed to create invoice.');
         }
+      } else if (proposal.action_type === 'UPDATE_INVOICE') {
+        const payload = {
+          client: proposal.client_name,
+          items: proposal.items,
+          status: proposal.status,
+          paymentStatus: proposal.paymentStatus,
+          notes: proposal.notes || '',
+          taxRate: proposal.taxRate || 0,
+        };
+
+        const res = await request.update({
+          entity: 'invoice',
+          id: proposal.invoice_id,
+          jsonData: payload,
+        });
+
+        if (res.success) {
+          message.success(`Invoice #${proposal.invoice_number} updated successfully!`);
+          if (onSuccess) onSuccess(res.result);
+          onClose();
+        } else {
+          message.error(res.message || 'Failed to update invoice.');
+        }
       } else if (proposal.action_type === 'CREATE_CLIENT') {
         const payload = {
           name: proposal.name,
@@ -53,6 +76,27 @@ export default function AiActionPreviewModal({ open, proposal, onClose, onRefine
           onClose();
         } else {
           message.error(res.message || 'Failed to create client.');
+        }
+      } else if (proposal.action_type === 'UPDATE_CLIENT') {
+        const payload = {
+          name: proposal.name,
+          email: proposal.email,
+          phone: proposal.phone,
+          address: proposal.address,
+        };
+
+        const res = await request.update({
+          entity: 'client',
+          id: proposal.client_id,
+          jsonData: payload,
+        });
+
+        if (res.success) {
+          message.success(`Client "${proposal.name}" updated successfully!`);
+          if (onSuccess) onSuccess(res.result);
+          onClose();
+        } else {
+          message.error(res.message || 'Failed to update client.');
         }
       } else if (proposal.action_type === 'CREATE_QUOTE') {
         const payload = {
@@ -74,9 +118,76 @@ export default function AiActionPreviewModal({ open, proposal, onClose, onRefine
         } else {
           message.error(res.message || 'Failed to create quote.');
         }
+      } else if (proposal.action_type === 'UPDATE_QUOTE') {
+        const payload = {
+          client: proposal.client_name,
+          items: proposal.items,
+          status: proposal.status,
+          notes: proposal.notes || '',
+          taxRate: proposal.taxRate || 0,
+        };
+
+        const res = await request.update({
+          entity: 'quote',
+          id: proposal.quote_id,
+          jsonData: payload,
+        });
+
+        if (res.success) {
+          message.success(`Quote #${proposal.quote_number} updated successfully!`);
+          if (onSuccess) onSuccess(res.result);
+          onClose();
+        } else {
+          message.error(res.message || 'Failed to update quote.');
+        }
+      } else if (proposal.action_type === 'CONVERT_QUOTE') {
+        const res = await request.convert({
+          entity: 'quote',
+          id: proposal.quote_id,
+        });
+
+        if (res.success) {
+          message.success(`Quote #${proposal.quote_number} converted to invoice successfully!`);
+          if (onSuccess) onSuccess(res.result);
+          onClose();
+        } else {
+          message.error(res.message || 'Failed to convert quote.');
+        }
+      } else if (proposal.action_type === 'RECORD_PAYMENT') {
+        const payload = {
+          client: proposal.client_id,
+          amount: proposal.amount,
+          paymentMode: proposal.payment_mode,
+        };
+
+        const res = await request.create({
+          entity: 'payment',
+          jsonData: payload,
+        });
+
+        if (res.success) {
+          message.success(`Payment of ${proposal.amount} recorded successfully for ${proposal.client_name}!`);
+          if (onSuccess) onSuccess(res.result);
+          onClose();
+        } else {
+          message.error(res.message || 'Failed to record payment.');
+        }
+      } else if (proposal.action_type === 'DELETE_RECORD') {
+        const res = await request.delete({
+          entity: proposal.entity,
+          id: proposal.record_id,
+        });
+
+        if (res.success) {
+          message.success(`${proposal.entity.toUpperCase()} record deleted successfully!`);
+          if (onSuccess) onSuccess(res.result);
+          onClose();
+        } else {
+          message.error(res.message || 'Failed to delete record.');
+        }
       }
     } catch (err) {
-      message.error(err.message || 'An error occurred during creation.');
+      message.error(err.message || 'An error occurred during operation.');
     } finally {
       setLoading(false);
     }

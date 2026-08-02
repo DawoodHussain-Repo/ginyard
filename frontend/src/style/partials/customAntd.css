@@ -481,6 +481,17 @@ body {
   color: #f8fafc !important;
 }
 
+[data-theme='dark'] .ant-descriptions-title,
+[data-theme='dark'] .ant-descriptions-item-label,
+[data-theme='dark'] .ant-descriptions-item-content,
+[data-theme='dark'] .ant-statistic-title,
+[data-theme='dark'] .ant-statistic-content,
+[data-theme='dark'] .ant-statistic-content-value,
+[data-theme='dark'] .ant-page-header-heading-title,
+[data-theme='dark'] .ant-page-header-heading-sub-title {
+  color: #f8fafc !important;
+}
+
 .ant-typography strong {
   font-weight: 700;
   color: var(--color-text-dark);
