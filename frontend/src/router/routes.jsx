@@ -28,6 +28,7 @@ const About = lazy(() => import('@/pages/About'));
 const AiAssistant = lazy(() => import('@/pages/AiAssistant'));
 
 const Landing = lazy(() => import('@/pages/Landing'));
+const Onboarding = lazy(() => import('@/pages/Onboarding'));
 
 let routes = {
   expense: [],
