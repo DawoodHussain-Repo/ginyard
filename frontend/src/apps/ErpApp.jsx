@@ -28,8 +28,8 @@ export default function ErpCrmApp() {
 
   if (!settingIsloaded) return <PageLoader />;
 
-  // Allow full-screen Landing Page for logged-in users at /landing
-  if (location.pathname === '/landing') {
+  // Allow full-screen Landing Page for logged-in users at / or /landing
+  if (location.pathname === '/' || location.pathname === '/landing') {
     return <AppRouter />;
   }
 
@@ -41,9 +41,9 @@ export default function ErpCrmApp() {
     return <AppRouter />;
   }
 
-  // If onboarding is completed but user manually visits /onboarding, redirect to home
+  // If onboarding is completed but user manually visits /onboarding, redirect to dashboard
   if (isOnboardingCompleted && location.pathname === '/onboarding') {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/dashboard" replace />;
   }
 
   return (

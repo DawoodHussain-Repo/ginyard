@@ -62,8 +62,12 @@ let routes = {
       element: <About />,
     },
     {
-      path: '/',
+      path: '/dashboard',
       element: <Dashboard />,
+    },
+    {
+      path: '/',
+      element: <Landing />,
     },
     {
       path: '/customer',

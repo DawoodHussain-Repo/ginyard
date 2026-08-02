@@ -36,7 +36,7 @@ export default function HeroSection({ isLoggedIn }) {
             fontWeight: 600,
             fontSize: 16,
           }}
-          onClick={() => navigate(isLoggedIn ? '/' : '/onboarding')}
+          onClick={() => navigate(isLoggedIn ? '/dashboard' : '/onboarding')}
         >
           {isLoggedIn ? 'Launch ERP Dashboard' : 'Start 14-Day Free Trial'}
         </Button>

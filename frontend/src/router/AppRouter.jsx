@@ -29,7 +29,7 @@ export default function AppRouter() {
     return 'default';
   }
   useEffect(() => {
-    if (location.pathname === '/') {
+    if (location.pathname === '/' || location.pathname === '/dashboard') {
       app.default();
     } else {
       const path = getAppNameByPath(location.pathname);

@@ -53,7 +53,7 @@ function Sidebar({ collapsible, isMobile = false }) {
     {
       key: 'dashboard',
       icon: <DashboardOutlined />,
-      label: <Link to={'/'}>{translate('dashboard')}</Link>,
+      label: <Link to={'/dashboard'}>{translate('dashboard')}</Link>,
     },
     {
       key: 'ai-assistant',
@@ -105,7 +105,7 @@ function Sidebar({ collapsible, isMobile = false }) {
   useEffect(() => {
     if (location) {
       const path = location.pathname.slice(1);
-      if (location.pathname === '/') {
+      if (location.pathname === '/' || location.pathname === '/dashboard') {
         setCurrentPath('dashboard');
       } else if (path === 'payment/mode') {
         setCurrentPath('paymentMode');
@@ -151,7 +151,7 @@ function Sidebar({ collapsible, isMobile = false }) {
       <div>
         <div
           className="logo"
-          onClick={() => navigate('/')}
+          onClick={() => navigate('/dashboard')}
           style={{
             cursor: 'pointer',
             padding: '16px 20px 12px',
