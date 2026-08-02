@@ -23,6 +23,7 @@ import {
   WalletOutlined,
   ReconciliationOutlined,
   GlobalOutlined,
+  RobotOutlined,
 } from '@ant-design/icons';
 
 const { Sider } = Layout;
